@@ -12,7 +12,7 @@ const Search = () => {
         placeholder="Search"
         className="border-2 border-yellow-700 focus:border-yellow-700 focus:outline-none placeholder-yellow-600 text-yellow-700 rounded-2xl p-1 "
       />
-      <Button icon={faSearch} />
+      <Button />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import Head from "next/head";
 
 import Landing from "@/components/Landing";
+import Card from "@/components/Card/Card";
 
 export default function Home() {
   return (
