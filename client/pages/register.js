@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { signup, signin } from "@/actions/auth";
+import { signup, signin } from "../actions/auth";
 import FileBase from "react-file-base64";
 import Button from "../components/PredDefinedComponents/Button";
 

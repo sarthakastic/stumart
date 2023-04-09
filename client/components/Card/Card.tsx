@@ -29,6 +29,7 @@ const Card = (props: any) => {
           <p className=" h-fit w-fit  py-1 px-4 md:mx-1 shadow-md rounded-2xl text-yellow-200 bg-yellow-700  ">
             {props?.tag}
           </p>
+
           <Button content={"View more details"} />
         </div>
       </div>

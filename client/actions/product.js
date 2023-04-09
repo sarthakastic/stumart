@@ -1,4 +1,4 @@
-import * as api from "@/api";
+import * as api from "../api";
 
 export const createProduct = (product, history) => async (dispatch) => {
   try {
