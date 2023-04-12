@@ -7,6 +7,7 @@ const productSchema = mongoose.Schema({
   photos: [String],
   category: String,
   creator: String,
+  name: String,
   createdAt: {
     type: Date,
     default: new Date(),

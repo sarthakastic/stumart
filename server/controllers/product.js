@@ -31,7 +31,7 @@ export const createProduct = async (req, res) => {
   const newProduct = new Product({
     ...product,
     creator: req.userId,
-    createtAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
   });
 
   try {

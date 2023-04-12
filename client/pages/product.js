@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import FileBase from "react-file-base64";
 import { createProducts } from "../slices/productSlice";
+import { getAddress } from "../slices/addressSlice";
 
 const product = () => {
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ const product = () => {
   const router = useRouter();
 
   const [user, setUser] = useState();
+  const [address, setAddress] = useState([]);
 
   const [currentId, setCurrentId] = useState(0);
 
@@ -32,9 +34,26 @@ const product = () => {
     category: "",
   });
 
+  console.log(user, "user");
+
   useEffect(() => {
     if (post) setPostData(post);
   }, [post]);
+
+  useEffect(() => {
+    console.log("first");
+    if (user?.result?._id) {
+      dispatch(getAddress(user?.result?._id))
+        .then((response) => {
+          const address = response?.payload;
+
+          setAddress(address);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,6 +88,10 @@ const product = () => {
 
   if (!user?.result?.name) {
     return "Please sign in to Add your product.";
+  }
+
+  if (!address?.name) {
+    return "Please add Address";
   }
 
   return (

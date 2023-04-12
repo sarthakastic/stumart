@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { signin, signup } from "../slices/authSlice";
@@ -26,6 +26,8 @@ const register = () => {
 
   const [formData, setFormData] = useState(initialState);
 
+  const [user, setUser] = useState();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -36,6 +38,16 @@ const register = () => {
       ? dispatch(signup(formData)).then(router.push("/"))
       : dispatch(signin(formData)).then(router.push("/"));
   };
+
+  useEffect(() => {
+    const storedProfile = localStorage.getItem("profile");
+    const initialUser = storedProfile ? JSON.parse(storedProfile) : null;
+    setUser(initialUser);
+  }, []);
+
+  if (user?.result?.name) {
+    router.push("/");
+  }
 
   return (
     <div className="flex">

@@ -14,8 +14,20 @@ export const createProduct = (newPost) =>
     },
   });
 
+export const addAddress = (formData) =>
+  API.post("/address", formData, {
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem("profile")).token
+      }`,
+      "X-Custom-Header": "foobar",
+    },
+  });
+
 export const signin = (formData) => API.post("/users/signin", formData);
 
 export const signup = (formData) => API.post("/users/signup", formData);
 
 export const fetchProducts = (page) => API.get(`/product?page=${page}`);
+
+export const getAddress = (creator) => API.get(`/address?creator=${creator}`);

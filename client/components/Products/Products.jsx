@@ -7,9 +7,19 @@ import Card from "../Card/Card";
 const Products = () => {
   const dispatch = useDispatch();
 
+  const [user, setUser] = useState();
+
   const [postData, setPostData] = useState([]);
+  // useEffect(() => {
+  //   const storedProfile = localStorage.getItem("profile");
+  //   const initialUser = storedProfile ? JSON.parse(storedProfile) : null;
+  //   setUser(initialUser);
+  // }, []);
 
   useEffect(() => {
+    const storedProfile = localStorage.getItem("profile");
+    const initialUser = storedProfile ? JSON.parse(storedProfile) : null;
+    setUser(initialUser);
     const page = 1;
     dispatch(fetchProducts(page))
       .then((posts) => {
@@ -20,6 +30,8 @@ const Products = () => {
       });
   }, []);
 
+  console.log(postData, "postData");
+
   return (
     <div className="flex flex-wrap justify-center ">
       {postData.map((i) => (
@@ -28,6 +40,8 @@ const Products = () => {
           name={i.title}
           tag={i.category}
           photos={i.photos[0]}
+          status={i.productStatus}
+          creator={i.creator}
         />
       ))}
     </div>
