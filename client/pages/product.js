@@ -3,13 +3,17 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import FileBase from "react-file-base64";
-import { createProduct } from "../actions/product";
+import { createProducts } from "../slices/productSlice";
 
 const product = () => {
   const dispatch = useDispatch();
+
   const router = useRouter();
+
   const [user, setUser] = useState();
+
   const [currentId, setCurrentId] = useState(0);
+
   useEffect(() => {
     const storedProfile = localStorage.getItem("profile");
     const initialUser = storedProfile ? JSON.parse(storedProfile) : null;
@@ -37,8 +41,8 @@ const product = () => {
 
     if (currentId === 0) {
       dispatch(
-        createProduct({ ...productData, name: user?.result?.name }, router)
-      );
+        createProducts({ ...productData, name: user?.result?.name })
+      ).then(router.push("/"));
       clear();
     } else {
       //   dispatch(

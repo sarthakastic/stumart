@@ -1,18 +1,17 @@
-import "@/styles/globals.css";
+import "../styles/globals.css";
 import { Provider } from "react-redux";
-import { legacy_createStore as createStore } from "redux";
-import { applyMiddleware, compose } from "redux";
+import { PersistGate } from "redux-persist/integration/react";
 
-import thunk from "redux-thunk";
-
-import reducers from "../reducers";
-
-const store = createStore(reducers, compose(applyMiddleware(thunk)));
+import Navbar from "../components/Navbar/Navbar";
+import { store, persistor } from "../store";
 
 export default function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
-      <Component {...pageProps} />;
+      <PersistGate loading={null} persistor={persistor}>
+        <Navbar />
+        <Component {...pageProps} />;
+      </PersistGate>
     </Provider>
   );
 }

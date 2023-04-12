@@ -17,3 +17,5 @@ export const createProduct = (newPost) =>
 export const signin = (formData) => API.post("/users/signin", formData);
 
 export const signup = (formData) => API.post("/users/signup", formData);
+
+export const fetchProducts = (page) => API.get(`/product?page=${page}`);

@@ -5,7 +5,6 @@ import Products from "./Products/Products";
 const Landing = () => {
   return (
     <>
-      <Navbar />
       <Products />
     </>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { signup, signin } from "../actions/auth";
+import { signin, signup } from "../slices/authSlice";
 import FileBase from "react-file-base64";
 import Button from "../components/PredDefinedComponents/Button";
 
@@ -21,6 +21,7 @@ const register = () => {
   };
 
   const dispatch = useDispatch();
+
   const router = useRouter();
 
   const [formData, setFormData] = useState(initialState);
@@ -32,8 +33,8 @@ const register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     isSignUp
-      ? dispatch(signup(formData, router))
-      : dispatch(signin(formData, router));
+      ? dispatch(signup(formData)).then(router.push("/"))
+      : dispatch(signin(formData)).then(router.push("/"));
   };
 
   return (
