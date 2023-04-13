@@ -34,14 +34,11 @@ const product = () => {
     category: "",
   });
 
-  console.log(user, "user");
-
   useEffect(() => {
     if (post) setPostData(post);
   }, [post]);
 
   useEffect(() => {
-    console.log("first");
     if (user?.result?._id) {
       dispatch(getAddress(user?.result?._id))
         .then((response) => {

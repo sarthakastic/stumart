@@ -16,21 +16,21 @@ const Products = () => {
   //   setUser(initialUser);
   // }, []);
 
+  const data = useSelector((state) => state?.posts?.currentPage);
+
   useEffect(() => {
     const storedProfile = localStorage.getItem("profile");
     const initialUser = storedProfile ? JSON.parse(storedProfile) : null;
     setUser(initialUser);
     const page = 1;
-    dispatch(fetchProducts(page))
+    dispatch(fetchProducts(data))
       .then((posts) => {
         setPostData(posts?.payload?.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-
-  console.log(postData, "postData");
+  }, [data]);
 
   return (
     <div className="flex flex-wrap justify-center ">

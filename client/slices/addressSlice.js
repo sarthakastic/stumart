@@ -20,7 +20,6 @@ export const getAddress = createAsyncThunk(
     try {
       const response = await api.getAddress(creator);
       const data = await response?.data;
-      console.log(data, "addressData");
       return data;
     } catch (error) {
       return rejectWithValue(error?.data);
@@ -28,21 +27,21 @@ export const getAddress = createAsyncThunk(
   }
 );
 
-const initialState = { address: {} };
+const initialState = { address: [] };
 
 const addressSlice = createSlice({
   name: "address",
   initialState: initialState,
   reducers: {
     resetAddress: (state, action) => {
-      state.address = action?.payload?.data;
+      state.address = action?.payload;
     },
     extraReducers: {
       [getAddress.pending]: (state) => {
         state.address = {};
       },
       [getAddress.fulfilled]: (state, action) => {
-        state.address = action.payload.data;
+        state.address = action.payload;
       },
       [getAddress.rejected]: (state) => {
         state.address = {};

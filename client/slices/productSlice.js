@@ -20,7 +20,6 @@ export const createProducts = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const { data } = await api.createProduct(formData);
-      console.log(data, "createProduct");
       return data;
     } catch (error) {
       return rejectWithValue(error?.data);
@@ -28,7 +27,19 @@ export const createProducts = createAsyncThunk(
   }
 );
 
-const initialState = { posts: [], numberOfPages: null };
+export const pagination = createAsyncThunk(
+  "pagination",
+  async (formData, { rejectWithValue }) => {
+    try {
+      console.log(formData, "formData");
+      return formData;
+    } catch (error) {
+      return rejectWithValue(error?.data);
+    }
+  }
+);
+
+const initialState = { posts: [], numberOfPages: null, currentPage: 1 };
 
 const postsSlice = createSlice({
   name: "posts",
@@ -37,6 +48,7 @@ const postsSlice = createSlice({
     resetProducts: (state, action) => {
       state.posts = action?.payload?.data;
       state.numberOfPages = action?.payload?.numberOfPages;
+      state.currentPage = action?.payload?.currentPage;
     },
   },
   extraReducers: {
@@ -47,6 +59,7 @@ const postsSlice = createSlice({
     [fetchProducts.fulfilled]: (state, action) => {
       state.posts = action.payload.data;
       state.numberOfPages = action.payload.numberOfPages;
+      state.currentPage = action?.payload?.currentPage;
     },
     [fetchProducts.rejected]: (state) => {
       state.posts = [];
@@ -61,6 +74,16 @@ const postsSlice = createSlice({
     },
     [createProducts.rejected]: (state) => {
       state.posts = [];
+    },
+    [pagination.pending]: (state) => {
+      state.currentPage = 1;
+    },
+    [pagination.fulfilled]: (state, action) => {
+      state.currentPage = action.payload;
+      console.log(state.currentPage, "prsl");
+    },
+    [pagination.rejected]: (state) => {
+      state.currentPage = 1;
     },
   },
 });
