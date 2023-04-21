@@ -1,14 +1,12 @@
 import React from "react";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Button = (props) => {
   return (
     <button
-      className=" h-fit w-fit  py-1 px-4 md:mx-1 shadow-md shadow-gray-400 rounded-2xl hover:text-yellow-200 hover:bg-yellow-700 border-yellow-700 text-yellow-700 border-2 "
+      className=" h-fit w-fit flex items-center text-xs md:text-md gap-2 py-1 px-4 md:mx-1 shadow-md shadow-gray-400 rounded-2xl hover:text-white hover:bg-gray-400 border-gray-400 text-gray-400 border-2 "
       onClick={props?.onClick}
     >
-      {/* <FontAwesomeIcon icon={props?.icon} /> */}
+      {props.icon}
       {props?.content}
     </button>
   );

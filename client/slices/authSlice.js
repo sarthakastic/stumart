@@ -48,7 +48,8 @@ export const authSlice = createSlice({
     },
     [signin.fulfilled]: (state, action) => {
       state.authData = action?.payload;
-      localStorage.setItem("profile", JSON.stringify({ ...action?.payload }));
+      state?.authData &&
+        localStorage.setItem("profile", JSON.stringify({ ...action?.payload }));
     },
     [signin.rejected]: (state) => {
       state.authData = null;

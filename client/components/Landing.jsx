@@ -6,15 +6,11 @@ import { pagination } from "../slices/productSlice";
 import Pagination from "./Pagination/Pagination";
 
 const Landing = () => {
-  // const data = useSelector((state) => state?.posts?.currentPage);
-
-  // const dispatch = useDispatch();
-
   return (
-    <>
+    <div className="flex flex-col items-center h-fit min-h-screen py-20 ">
       <Products />
       <Pagination />
-    </>
+    </div>
   );
 };
 

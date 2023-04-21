@@ -9,7 +9,16 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    fontFamily: {
+      main: [
+        "Poppins",
+        "-apple-system",
+        "BlinkMacSystemFont",
+        "Roboto",
+        "sans-serif",
+      ],
+      montserrat: ["Montserrat"],
+    },
   },
   plugins: [],
 };

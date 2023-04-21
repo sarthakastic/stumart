@@ -67,3 +67,19 @@ export const deleteProduct = async (req, res) => {
   await Product.findByIdAndRemove(id);
   res.json({ message: "Product deleted succesfully" });
 };
+
+export const getProductsBySearch = async (req, res) => {
+  const { searchQuery, category } = req.query;
+
+  try {
+    const title = new RegExp(searchQuery, "i");
+
+    const posts = await Product.find({
+      $or: [{ title }, { category }],
+    });
+
+    res.json({ data: posts });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};

@@ -3,6 +3,9 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import Button from "../PredDefinedComponents/Button";
 import { logout } from "../../slices/authSlice";
+import { HiHome } from "react-icons/Hi";
+import { FiLogIn } from "react-icons/Fi";
+import { BiImageAdd } from "react-icons/Bi";
 
 const Navigation = () => {
   const dispatch = useDispatch();
@@ -30,9 +33,13 @@ const Navigation = () => {
   };
 
   return (
-    <div className="flex justify-around items-center h-full ">
-      <Button content="Home" onClick={home} />
-      <Button content="Add New Product" onClick={addProduct} />
+    <div className="flex justify-around md:justify-between items-center h-full w-full md:w-fit">
+      <Button content="Home" onClick={home} icon={<HiHome />} />
+      <Button
+        content="Add New Product"
+        onClick={addProduct}
+        icon={<BiImageAdd />}
+      />
       {user ? (
         <button className="" onClick={() => dispatch(logout())}>
           <img
@@ -42,7 +49,11 @@ const Navigation = () => {
           />
         </button>
       ) : (
-        <Button content="Sign Up/Log In" onClick={register} />
+        <Button
+          content="Sign Up/Log In"
+          onClick={register}
+          icon={<FiLogIn />}
+        />
       )}
     </div>
   );

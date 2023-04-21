@@ -39,6 +39,19 @@ export const pagination = createAsyncThunk(
   }
 );
 
+export const searchProducts = createAsyncThunk(
+  "search",
+  async (searchQuery, { rejectWithValue }) => {
+    try {
+      const response = await api.searchProducts(searchQuery);
+      const data = await response?.data;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.data);
+    }
+  }
+);
+
 const initialState = { posts: [], numberOfPages: null, currentPage: 1 };
 
 const postsSlice = createSlice({
@@ -84,6 +97,16 @@ const postsSlice = createSlice({
     },
     [pagination.rejected]: (state) => {
       state.currentPage = 1;
+    },
+    [searchProducts.pending]: (state) => {
+      state.posts = [];
+    },
+    [searchProducts.fulfilled]: (state, action) => {
+      state.posts = action.payload.data;
+      console.log(state.posts, "prsl");
+    },
+    [searchProducts.rejected]: (state) => {
+      state.posts = [];
     },
   },
 });

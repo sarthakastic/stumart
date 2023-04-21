@@ -1,39 +1,53 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../../slices/productSlice";
-import Card from "../Card/Card";
+import React from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchProducts } from '../../slices/productSlice'
+import { useRouter } from 'next/router'
+import Card from '../Card/Card'
 
 const Products = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const [user, setUser] = useState();
+  const [user, setUser] = useState()
 
-  const [postData, setPostData] = useState([]);
+  const [postData, setPostData] = useState([])
   // useEffect(() => {
   //   const storedProfile = localStorage.getItem("profile");
   //   const initialUser = storedProfile ? JSON.parse(storedProfile) : null;
   //   setUser(initialUser);
   // }, []);
 
-  const data = useSelector((state) => state?.posts?.currentPage);
+  const data = useSelector((state) => state?.posts?.currentPage)
+
+  const router = useRouter()
+
+  const handleScrollToElement = (id) => {
+    const element = document.getElementById(id)
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop,
+        // behavior: "smooth",
+      })
+    }
+  }
 
   useEffect(() => {
-    const storedProfile = localStorage.getItem("profile");
-    const initialUser = storedProfile ? JSON.parse(storedProfile) : null;
-    setUser(initialUser);
-    const page = 1;
+    const storedProfile = localStorage.getItem('profile')
+    const initialUser = storedProfile ? JSON.parse(storedProfile) : null
+    setUser(initialUser)
+    const page = 1
     dispatch(fetchProducts(data))
       .then((posts) => {
-        setPostData(posts?.payload?.data);
+        setPostData(posts?.payload?.data)
+        handleScrollToElement('product')
       })
       .catch((error) => {
-        console.log(error);
-      });
-  }, [data]);
+        console.log(error)
+      })
+  }, [data])
 
   return (
-    <div className="flex flex-wrap justify-center ">
+    <div id="product" className="flex flex-wrap justify-center pt-20 ">
       {postData.map((i) => (
         <Card
           price={i.cost}
@@ -45,7 +59,7 @@ const Products = () => {
         />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default Products;
+export default Products

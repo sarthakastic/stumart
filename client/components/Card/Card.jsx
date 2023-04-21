@@ -25,7 +25,7 @@ const Card = (props) => {
   }, [props.creator]);
 
   return (
-    <div className="rounded-2xl w-72 h-80 m-5 border-yellow-700 border-2 ">
+    <div className="rounded-2xl w-72 h-80 m-5 border-2 border-gray-500 bg-white ">
       <img
         className="w-72 h-40 rounded-t-2xl "
         src={props?.photos}
@@ -42,7 +42,7 @@ const Card = (props) => {
           </>
         )}
         <div className="flex justify-between items-center text-xs ">
-          <p className=" h-fit w-fit  py-1 px-4 md:mx-1 shadow-md rounded-2xl text-yellow-200 bg-yellow-700  ">
+          <p className=" h-fit w-fit  py-1 px-4 md:mx-1 shadow-md rounded-2xl text-gray-200 bg-gray-700  ">
             {props?.tag}
           </p>
           {props?.status ? (

@@ -31,3 +31,10 @@ export const signup = (formData) => API.post("/users/signup", formData);
 export const fetchProducts = (page) => API.get(`/product?page=${page}`);
 
 export const getAddress = (creator) => API.get(`/address?creator=${creator}`);
+
+export const searchProducts = (searchQuery) =>
+  API.get(
+    `/product/search?searchQuery=${searchQuery.search || "none"}&category=${
+      searchQuery.category
+    }`
+  );
