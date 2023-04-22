@@ -56,6 +56,7 @@ const Products = () => {
           photos={i.photos[0]}
           status={i.productStatus}
           creator={i.creator}
+          id={i._id}
         />
       ))}
     </div>

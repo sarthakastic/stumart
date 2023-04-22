@@ -1,40 +1,53 @@
-import axios from "axios";
+import axios from 'axios'
 
 const API = axios.create({
-  baseURL: "http://localhost:8001/",
-});
+  baseURL: 'http://localhost:8001/',
+})
 
 export const createProduct = (newPost) =>
-  API.post("/product", newPost, {
+  API.post('/product', newPost, {
     headers: {
       Authorization: `Bearer ${
-        JSON.parse(localStorage.getItem("profile")).token
+        JSON.parse(localStorage.getItem('profile')).token
       }`,
-      "X-Custom-Header": "foobar",
+      'X-Custom-Header': 'foobar',
     },
-  });
+  })
 
 export const addAddress = (formData) =>
-  API.post("/address", formData, {
+  API.post('/address', formData, {
     headers: {
       Authorization: `Bearer ${
-        JSON.parse(localStorage.getItem("profile")).token
+        JSON.parse(localStorage.getItem('profile')).token
       }`,
-      "X-Custom-Header": "foobar",
+      'X-Custom-Header': 'foobar',
     },
-  });
+  })
 
-export const signin = (formData) => API.post("/users/signin", formData);
+export const signin = (formData) => API.post('/users/signin', formData)
 
-export const signup = (formData) => API.post("/users/signup", formData);
+export const signup = (formData) => API.post('/users/signup', formData)
 
-export const fetchProducts = (page) => API.get(`/product?page=${page}`);
+export const fetchProducts = (page) => API.get(`/product?page=${page}`)
 
-export const getAddress = (creator) => API.get(`/address?creator=${creator}`);
+export const getAddress = (creator) => API.get(`/address?creator=${creator}`)
 
 export const searchProducts = (searchQuery) =>
   API.get(
-    `/product/search?searchQuery=${searchQuery.search || "none"}&category=${
-      searchQuery.category
+    `/product/search?searchQuery=${searchQuery.search || 'none'}&category=${
+      searchQuery.category || 'none'
     }`
-  );
+  )
+
+export const getProduct = (id) =>
+  API.get(`/product/${id}`, {
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem('profile')).token
+      }`,
+      'X-Custom-Header': 'foobar',
+    },
+  })
+
+export const getUserProduct = (creator) =>
+  API.get(`/product/userData/${creator}`)

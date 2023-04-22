@@ -25,6 +25,16 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
+export const getProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await Product.findById(id);
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 export const createProduct = async (req, res) => {
   const product = req.body;
 
@@ -81,5 +91,25 @@ export const getProductsBySearch = async (req, res) => {
     res.json({ data: posts });
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+export const getUserProducts = async (req, res) => {
+  const creator = req.params.id;
+
+  try {
+    // Create a query object with the `creator` field and value
+    const product = await Product.find({
+      creator: creator,
+    });
+
+    // Check if the address is found
+    if (product) {
+      res.status(200).json(product);
+    } else {
+      res.status(400).json({ message: "Address not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

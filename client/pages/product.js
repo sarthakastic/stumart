@@ -9,6 +9,7 @@ import Button from '../components/PredDefinedComponents/Button'
 import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from 'react-icons/Io'
 import { FiLogIn } from 'react-icons/Fi'
 import { BiLocationPlus } from 'react-icons/Bi'
+import Gpt from '../components/gpt'
 const product = () => {
   const dispatch = useDispatch()
 
@@ -17,6 +18,9 @@ const product = () => {
   const [user, setUser] = useState()
   const [address, setAddress] = useState([])
   const [showOption, setShowOPtion] = useState(false)
+  const [showGpt, setShowGpt] = useState(false)
+  const [gpt, setGpt] = useState('')
+  const [useAi, setUseAi] = useState(false)
 
   const [currentId, setCurrentId] = useState(0)
 
@@ -91,6 +95,14 @@ const product = () => {
     setProductData({ ...productData, [e.target.name]: e.target.value })
   }
 
+  const handleGpt = () => {
+    setShowGpt((option) => !option)
+  }
+
+  const handleAi = () => {
+    setUseAi((option) => !option)
+  }
+
   const register = () => {
     router.push('/register')
   }
@@ -103,7 +115,7 @@ const product = () => {
     return (
       <div className="h-screen bg-gray-500 flex flex-col justify-center items-center">
         <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-gray-700 ">
-          Please Sign In before adding your address.
+          Please Sign In before adding your product.
         </h1>
         <Button
           content="Sign Up/Sign In"
@@ -132,7 +144,7 @@ const product = () => {
   return (
     <div className=" bg-gray-400 min-h-screen flex items-center justify-center">
       <form
-        className="flex flex-col md:w-1/2 items-center justify-center bg-white p-5 rounded-2xl"
+        className="flex flex-col md:w-1/2 items-center m-2 justify-center bg-white p-5 rounded-2xl"
         onSubmit={handleSubmit}
       >
         <input
@@ -159,6 +171,39 @@ const product = () => {
           onChange={handleChange}
           placeholder="Details"
         />
+        <div className="text-gray-500 font-bold text-xs m-2">
+          Don't know exactly what to write in details? Use AI to write it for
+          you.{' '}
+          <span
+            onClick={handleAi}
+            className="border-2 hover:cursor-pointer hover:text-gray-200 hover:bg-gray-400 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-fit "
+          >
+            Use AI
+          </span>
+        </div>
+        {useAi && (
+          <div className=" w-full h-fit ">
+            <input
+              className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+              placeholder="Enter prompt here!"
+              type="text"
+              value={gpt}
+              onChange={(e) => setGpt(e.target.value)}
+            />
+            <div className="m-2 text-gray-500 font-bold text-xs">
+              {' '}
+              Try "Write a post for selling iphone 14 used 6 months in 50 words"
+              <span
+                className="border-2 hover:cursor-pointer hover:text-gray-200 hover:bg-gray-400 border-gray-400 rounded-2xl m-1 p-1 text-gray-400 placeholder-gray-400 w-fit "
+                onClick={handleGpt}
+              >
+                {' '}
+                Ask AI
+              </span>
+            </div>
+          </div>
+        )}
+        {showGpt && useAi && gpt !== '' && <Gpt content={gpt} />}
         <div className="flex items-center w-full ">
           <input
             required

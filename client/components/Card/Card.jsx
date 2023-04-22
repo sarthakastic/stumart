@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
-import Button from "../PredDefinedComponents/Button";
-import { getAddress } from "../../slices/addressSlice";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react'
+import Button from '../PredDefinedComponents/Button'
+import { getAddress } from '../../slices/addressSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
 
 const Card = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const router = useRouter()
 
-  const [address, setAddress] = useState([]);
-  const creator = props.creator;
+  const [address, setAddress] = useState([])
+  const creator = props.creator
 
   useEffect(() => {
     // Make sure `props.creator` is a valid string value
@@ -15,14 +17,18 @@ const Card = (props) => {
       // Dispatch the getAddress action with `props.creator` as an argument
       dispatch(getAddress(creator))
         .then((response) => {
-          const address = response?.payload;
-          setAddress(address);
+          const address = response?.payload
+          setAddress(address)
         })
         .catch((error) => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     }
-  }, [props.creator]);
+  }, [props.creator])
+
+  const productDetails = () => {
+    router.push(`/product/${props?.id}`)
+  }
 
   return (
     <div className="rounded-2xl w-72 h-80 m-5 border-2 border-gray-500 bg-white ">
@@ -50,12 +56,12 @@ const Card = (props) => {
               Sold
             </div>
           ) : (
-            <Button content={"View more details"} />
+            <Button content={'View more details'} onClick={productDetails} />
           )}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Card;
+export default Card
