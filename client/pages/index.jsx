@@ -1,5 +1,9 @@
 import Head from 'next/head'
 import Landing from '../components/Landing'
+import Products from '../components/Products/Products'
+import Carousel from '../components/Carousel/Carousel'
+import { AiOutlineArrowRight } from 'react-icons/Ai'
+import Category from '../components/Category/Category'
 
 export default function Home() {
   return (
@@ -10,7 +14,21 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Landing />
+      <div className="flex flex-col items-center h-fit min-h-screen py-14 ">
+        <div className="z-10 ">
+          <Carousel />
+        </div>
+
+        <h1 className="font-bold text-4xl w-full flex justify-start p-5 text-gray-700">
+          View products by category
+        </h1>
+
+        <Category />
+        <h1 className="font-bold text-4xl w-full flex justify-start p-5  text-gray-700">
+          Latest products
+        </h1>
+        <Products />
+      </div>
     </>
   )
 }

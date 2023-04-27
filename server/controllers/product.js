@@ -1,12 +1,16 @@
 import express from "express";
+import fs from "fs";
+import * as mimeTypes from "mime-types";
 import mongoose from "mongoose";
 import Product from "../models/product.js";
 
 export const getAllProducts = async (req, res) => {
   const { page } = req.query;
 
+  const { limit } = req.query;
+
   try {
-    const LIMIT = 8;
+    const LIMIT = limit;
     const startIndex = (Number(page) - 1) * LIMIT;
     const total = await Product.countDocuments({});
 
@@ -43,6 +47,33 @@ export const createProduct = async (req, res) => {
     creator: req.userId,
     createdAt: new Date().toISOString(),
   });
+
+  // Convert selectedFile to file object
+  const fileBuffer = Buffer.from(product.photos, "base64");
+
+  // Write file buffer to a temporary file
+  const tempFilePath = "/tmp/" + Date.now() + "-tempfile";
+  fs.writeFileSync(tempFilePath, fileBuffer);
+
+  // Check file size
+  const stats = fs.statSync(tempFilePath);
+  const fileSizeInBytes = stats.size;
+  const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+  fs.unlinkSync(tempFilePath); // Delete temporary file
+
+  if (fileSizeInMB > 30) {
+    return res.status(400).json({ message: "File size exceeds 30MB." });
+  }
+
+  const fileExtension = product.photos.split(";")[0].split("/")[1];
+  const mimeType = mimeTypes.lookup(fileExtension);
+
+  // Add allowed file types here
+  const allowedMimeTypes = ["image/jpeg", "image/png"];
+
+  if (!mimeType || !allowedMimeTypes.includes(mimeType)) {
+    return res.status(400).json({ message: "Invalid file type." });
+  }
 
   try {
     await newProduct.save();
@@ -101,7 +132,7 @@ export const getUserProducts = async (req, res) => {
     // Create a query object with the `creator` field and value
     const product = await Product.find({
       creator: creator,
-    });
+    }).sort({ _id: -1 });
 
     // Check if the address is found
     if (product) {

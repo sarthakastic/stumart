@@ -2,12 +2,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import * as api from '../api/index'
 
 export const fetchProducts = createAsyncThunk(
-  'fetchProducts',
-  async (page, { rejectWithValue }) => {
+  'products/fetchProducts', // Unique string identifier for the thunk action
+  async ({ limit, page }, { rejectWithValue }) => {
+    console.log(limit, 'f limit')
     try {
-      const response = await api.fetchProducts(page)
+      const response = await api.fetchProducts(limit, page) // Call your API function with the passed arguments
       const data = await response?.data
-      console.log(data, 'data')
       return data
     } catch (error) {
       return rejectWithValue(error?.data)
@@ -77,6 +77,21 @@ export const getUserProduct = createAsyncThunk(
       console.log(data, 'data')
       return data
     } catch (error) {
+      return rejectWithValue(error?.data)
+    }
+  }
+)
+
+export const updateProduct = createAsyncThunk(
+  'updateProduct',
+  async (id, formData, { rejectWithValue }) => {
+    console.log('firstslice')
+    try {
+      console.log(formData, id, 'slice')
+      const { data } = await api.updateProduct(id, formData)
+      return data
+    } catch (error) {
+      console.log('first', error?.data)
       return rejectWithValue(error?.data)
     }
   }

@@ -1,65 +1,278 @@
+// Native Imports
 import { useRouter } from 'next/router'
-import { useSelector, useDispatch } from 'react-redux'
-import { fetchProducts, getUserProduct } from '../../slices/productSlice'
 import React, { useState, useEffect } from 'react'
-import Card from '../../components/Card/Card'
-import Pagination from '../../components/Pagination/Pagination'
+import { useSelector, useDispatch } from 'react-redux'
+
+// Redux Imports
+import { getUserProduct } from '../../slices/productSlice'
+import { getAddress } from '../../slices/addressSlice'
+import { logout } from '../../slices/authSlice'
+
+// Components Imports
+import Card from '../../components/PredDefinedComponents/Card'
+import AddAddress from '../../components/Address/AddAddress'
+import UserInfo from '../../components/UserInfo/UserInfo'
+import Button from '../../components/PredDefinedComponents/Button'
+import NoPosts from '../../components/PredDefinedComponents/NoPosts'
+
+// Icons Imports
+import { ImCross } from 'react-icons/Im'
+import { AiFillEdit } from 'react-icons/Ai'
+import { BiLocationPlus } from 'react-icons/Bi'
+import { FiLogIn } from 'react-icons/Fi'
 
 const MyProfile = () => {
   const router = useRouter()
   const dispatch = useDispatch()
+
   const data = useSelector((state) => state?.posts)
-  console.log(data, 'posts user')
 
-  const [user, setUser] = useState()
+  const [user, setUser] = useState() // set localstorage data
 
-  const [postData, setPostData] = useState([])
+  const [postData, setPostData] = useState([]) // set user products
+
+  const [address, setAddress] = useState([]) // set user address
+
+  const [creator, setCreator] = useState('') // set user ID
+
+  const [productId, setProductId] = useState('') // set product iD
+
+  const [edit, setEdit] = useState(false) // check if we want to edit profile or not
+
+  const [editAddress, setEditAddress] = useState(false) // check if we want to edit address or not
 
   const id = router.query.id
 
-  const handleScrollToElement = (id) => {
-    const element = document.getElementById(id)
-    if (element) {
-      window.scrollTo({
-        top: element.offsetTop,
-        // behavior: "smooth",
-      })
-    }
-  }
-
+  // retrieve data from local storage
   useEffect(() => {
     const storedProfile = localStorage.getItem('profile')
     const initialUser = storedProfile ? JSON.parse(storedProfile) : null
     setUser(initialUser)
+  }, [])
+
+  //  retrieve posts by user
+  useEffect(() => {
     const page = 1
-    dispatch(getUserProduct(id))
+    dispatch(getUserProduct(user?.result?._id))
       .then((posts) => {
-        console.log(posts, 'dispatch')
         setPostData(posts?.payload)
-        handleScrollToElement('product')
+        setCreator(user?.result?._id)
       })
       .catch((error) => {
         console.log(error)
       })
-  }, [])
+  }, [user])
+
+  // retrieve user address
+  useEffect(() => {
+    creator &&
+      dispatch(getAddress(creator))
+        .then((response) => {
+          const address = response?.payload
+          setAddress(address)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+  }, [creator])
+
+  // used for logout
+  const handleLogOut = () => {
+    dispatch(logout()).then(router.push('/'))
+  }
+
+  // redirect to add products
+  const addProduct = () => {
+    router.push('/product')
+  }
+
+  // redirect to add address
+  const addAddress = () => {
+    router.push('/addresss')
+  }
+
+  // manage edit profile
+  const handleEdit = (id) => {
+    setProductId(id)
+    setEdit((edit) => !edit)
+  }
+
+  //  manage edit address
+  const handleAddressEdit = (id) => {
+    setProductId(id)
+    setEditAddress((editAddress) => !editAddress)
+  }
+
+  //  redirect to sign up/sign in
+  const register = () => {
+    router.push('/register')
+  }
+
+  // if user not login
+  if (!user?.result?.name) {
+    return (
+      <div className="h-screen bg-gray-400 flex flex-col justify-center items-center">
+        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-gray-700 ">
+          Please Sign In to view details.
+        </h1>
+        <Button
+          content="Sign Up/Sign In"
+          onClick={register}
+          icon={<FiLogIn />}
+        />
+      </div>
+    )
+  }
 
   return (
-    <div>
-      {console.log(postData, 'myprofilemnx cmnd nc')}
-      <div id="product" className="flex flex-wrap justify-center pt-20 ">
+    <div className={`py-20  min-h-screen  `}>
+      <div className="w-full px-10 flex justify-center md:justify-between ">
+        {/* user all info div */}
+        <div className="flex w-full flex-col md:flex-row bg-gray-300 rounded-2xl p-5 md:justify-between justify-evenly shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] ">
+          {/* user info div */}
+          <div className="flex flex-col items-center ">
+            <img
+              className="rounded-full w-40 h-40"
+              src={user?.result?.selectedFile}
+            />
+            <div className="flex flex-col items-center justify-center ">
+              <p className="font-bold text-gray-700 ">{user?.result?.name}</p>
+              <p className="font-bold text-gray-700 ">
+                {user?.result?.phoneNumber}
+              </p>
+            </div>
+            <Button
+              onClick={handleEdit}
+              content="Edit Profile"
+              icon={<AiFillEdit />}
+            />
+          </div>
+          {/* desktop view product stats */}
+          <div className="w-full hidden md:flex justify-around items-center  ">
+            <div className="flex flex-col justify-center items-center border-gray-700 border-2 p-2 rounded-2xl ">
+              <p className="font-bold text-gray-700 text-2xl ">
+                {' '}
+                Total Products
+              </p>
+              <p className="font-bold text-gray-700 text-2xl ">
+                {' '}
+                {postData?.length}
+              </p>
+            </div>
+            <div className="flex flex-col justify-center items-center  border-gray-700 border-2 p-2 rounded-2xl">
+              <p className="font-bold text-gray-700 text-2xl ">Sold Products</p>
+              <p className="font-bold text-gray-700 text-2xl ">
+                {' '}
+                {postData?.filter((i) => i.productStatus === true).length}
+              </p>
+            </div>
+          </div>
+          {/* address info */}
+          <div className="flex flex-col my-5 md:my-0 justify-center items-center md:items-start  ">
+            {address?.hostel ? (
+              <>
+                <p className="font-bold text-gray-700">
+                  {address?.hostel} Hostel{' '}
+                </p>
+                <p className="font-bold text-gray-700">
+                  {address?.floor} Floor{' '}
+                </p>
+                <p className="font-bold text-gray-700">
+                  Room No. {address?.room}
+                </p>
+                <Button onClick={handleAddressEdit} content="Edit Address" />
+              </>
+            ) : (
+              <Button
+                content="Add Address"
+                onClick={addAddress}
+                icon={<BiLocationPlus />}
+              />
+            )}
+            <span className="mt-2"></span>
+            <Button
+              content="Sign Out"
+              onClick={handleLogOut}
+              icon={<FiLogIn />}
+            />
+          </div>
+          {/* mobile view product stats */}
+          <div className="w-full flex flex-col md:hidden justify-around items-center ">
+            <div className="flex flex-col justify-center items-center">
+              <p className="font-bold text-gray-700">Total Products</p>
+              <p className="font-bold text-gray-700"> {postData?.length}</p>
+            </div>
+            <div className="flex flex-col justify-center items-center">
+              <p className="font-bold text-gray-700"> Sold Products</p>
+              <p className="font-bold text-gray-700">
+                {' '}
+                {postData?.filter((i) => i.productStatus === true).length}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/*  div to display uses's posts */}
+      <div className="flex  flex-wrap justify-center md:justify-evenly p-5   ">
+        {/* If there are no posts by users */}
+        {postData?.length === 0 && (
+          <NoPosts heading=" Oops! You haven't posted yet." />
+        )}
+        {/* User products */}
+        {postData?.length > 0 && (
+          <h1 className="font-bold text-sm md:text-4xl w-full flex text-center justify-start p-5 text-gray-700">
+            My Products
+          </h1>
+        )}
         {postData.map((i) => (
-          <Card
-            price={i.cost}
-            name={i.title}
-            tag={i.category}
-            photos={i.photos[0]}
-            status={i.productStatus}
-            creator={i.creator}
-            id={i._id}
-          />
+          <div className="border-[1px] mt-1 bg-gray-100 rounded-xl shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] ">
+            <Card
+              key={i._id}
+              price={i.cost}
+              name={i.title}
+              tag={i.category}
+              photos={i.photos[0]}
+              status={i.productStatus}
+              creator={i.creator}
+              id={i._id}
+            />
+          </div>
         ))}
       </div>
-      <Pagination />
+
+      {/* edit user info */}
+      {edit && (
+        <div className="fixed inset-0 z-10  bg-black bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center ">
+          <div
+            onClick={handleEdit}
+            className="text-2xl flex items-start bg-red-400 hover:text-white hover:cursor-pointer hover:bg-gray-700 rounded-full p-1 border-2 border-gray-700 "
+          >
+            <ImCross />
+          </div>
+          <h2 className=" text-gray-700 font-bold ">Edit Product!</h2>
+          <div className="h-1/2 w-1/2 ">
+            <UserInfo isSignUp={true} editUserInfo={true} />
+          </div>
+        </div>
+      )}
+
+      {/* edit address */}
+      {editAddress && (
+        <>
+          <div className="fixed inset-0 z-10  bg-black bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center ">
+            <div
+              onClick={handleAddressEdit}
+              className="text-2xl flex items-start bg-red-400 hover:text-white hover:cursor-pointer hover:bg-gray-700 rounded-full p-1 border-2 border-gray-700 "
+            >
+              <ImCross />
+            </div>
+            <h2 className=" text-gray-700 font-bold ">Edit Product!</h2>
+            <div className="h-1/2 w-1/2 ">
+              <AddAddress id={user?.result?._id} editUserInfo={true} />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

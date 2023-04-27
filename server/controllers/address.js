@@ -36,3 +36,23 @@ export const getAddress = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const updateAddress = async (req, res) => {
+  const { _id } = req.query;
+
+  console.log(_id);
+
+  const address = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(404).send("No address with this ID");
+
+  const updatedProduct = await Address.findByIdAndUpdate(
+    _id,
+    { ...address, _id },
+    {
+      new: true,
+    }
+  );
+  res.json(updatedProduct);
+};

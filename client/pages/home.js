@@ -1,11 +1,16 @@
 import Head from 'next/head'
 
 import Landing from '../components/Landing'
+import Products from '../components/Products/Products'
+import Pagination from '../components/Pagination/Pagination'
 
 export default function Marketplace() {
   return (
     <>
-      <Landing />
+      <div className="flex flex-col items-center h-fit min-h-screen py-20 ">
+        <Products />
+        <Pagination />
+      </div>
     </>
   )
 }

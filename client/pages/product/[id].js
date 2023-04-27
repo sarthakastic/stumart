@@ -1,11 +1,18 @@
+// Native Imports
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
+// Redux Imports
 import { getProduct } from '../../slices/productSlice'
 import { getAddress } from '../../slices/addressSlice'
 import { searchProducts } from '../../slices/productSlice'
+
+// Components Imports
 import Button from '../../components/PredDefinedComponents/Button'
-import Card from '../../components/Card/Card'
+import Card from '../../components/PredDefinedComponents/Card'
+
+// Icons Imports
 import { FiLogIn } from 'react-icons/Fi'
 
 const Product = () => {
@@ -15,9 +22,13 @@ const Product = () => {
   const post = useSelector((posts) => posts?.posts?.posts)
 
   const [search, setSearchData] = useState('')
+
   const [category, setCategory] = useState('')
+
   const [user, setUser] = useState()
+
   const [address, setAddress] = useState([])
+
   const [productData, setProductData] = useState({
     title: '',
     cost: NaN,
@@ -77,7 +88,7 @@ const Product = () => {
 
   if (!user?.result?.name) {
     return (
-      <div className="h-screen bg-gray-500 flex flex-col justify-center items-center">
+      <div className="h-screen bg-gray-400 flex flex-col justify-center items-center">
         <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-gray-700 ">
           Please Sign In to view details.
         </h1>
@@ -91,7 +102,7 @@ const Product = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center bg-gray-400 h-fit  min-h-screen md:min-h-[920px] py-20 px-2 md:p-20">
+    <div className="flex flex-col justify-center items-center bg-gray-400 h-fit  min-h-screen md:min-h-screen py-20 px-2 md:p-20">
       <div className="rounded-2xl w-full h-full m-5 border-2 flex flex-col md:flex-row items-center  p-2 border-gray-500 bg-white ">
         <img
           className="w-28 md:w-72 h-full rounded-2xl "
@@ -107,7 +118,7 @@ const Product = () => {
             {' '}
             <span> Price : </span> <br /> Rs.{productData?.cost}/-
           </p>
-          <p className="px-2 ">
+          <p className="px-2 flex w-full ">
             {' '}
             <span> Details : </span> <br /> {productData?.details}
           </p>

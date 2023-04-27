@@ -12,7 +12,7 @@ const lost = () => {
     router.push('/')
   }
   return (
-    <div className="h-screen bg-gray-500 flex flex-col justify-center items-center">
+    <div className="h-screen bg-gray-400 flex flex-col justify-center items-center">
       <img
         className="md:w-1/2 md:h-3/4"
         src={lostIcon.src}
