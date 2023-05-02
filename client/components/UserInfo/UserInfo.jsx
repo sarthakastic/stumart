@@ -41,12 +41,20 @@ const UserInfo = (props) => {
   const onSubmit = async (e) => {
     e.preventDefault()
 
-    props?.editUserInfo && api.editProfile(user?.result?._id, formData)
-    // .then(
-    //   (user?.result?.name = `${formData?.firstName} ${formData?.lastName}`)(
-    //     (user?.result?.selectedFile = `${formData?.selectedFile}`)
-    //   )
-    // )
+    const storedData = JSON.parse(localStorage.getItem('profile'))
+
+    storedData.result.name = formData?.firstName + ' ' + formData?.lastName
+    storedData.result.selectedFile = formData?.selectedFile
+
+    const updateProfileLocalStorage = () => {
+      localStorage.setItem('profile', JSON.stringify(storedData))
+      router.reload()
+    }
+
+    props?.editUserInfo &&
+      api
+        .editProfile(user?.result?._id, formData)
+        .then(updateProfileLocalStorage)
 
     isSignUp &&
       !props?.editUserInfo &&
