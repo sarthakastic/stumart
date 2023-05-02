@@ -21,11 +21,11 @@ const NoPosts = (props) => {
 
   return (
     <div className="w-full flex flex-col h-fit justify-center items-center ">
-      <h1 className="font-bold text-4xl w-full flex text-center justify-center p-5 text-gray-700">
+      <h1 className="font-bold text-4xl w-full font-montserrat flex text-center justify-center text-primary p-5 text-gprimary">
         {props?.heading}
       </h1>
-      <img className="h-96 bg-gray-50 rounded-full " src={noPosts.src} />
-      <h4 className="font-bold text-4xl w-full flex text-center justify-center p-5 text-gray-700">
+      <img className="h-96 bg-ternary rounded-full " src={noPosts.src} />
+      <h4 className="font-bold text-4xl font-montserrat w-full flex text-center justify-center p-5 text-primary">
         Add a Product now.
       </h4>
       <Button

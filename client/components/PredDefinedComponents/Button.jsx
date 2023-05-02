@@ -1,17 +1,34 @@
 import React from 'react'
-import Navbar from '../Navbar/Navbar'
 
 const Button = (props) => {
   return (
-    <button
-      className={` h-fit w-fit flex items-center text-xs md:text-md gap-2 py-1 px-4 md:mx-1 shadow-md  rounded-2xl hover:text-white hover:bg-gray-400 border-gray-700 text-gray-500  ${
-        props?.navbar ? 'null' : ' border - 2'
-      } `}
-      onClick={props?.onClick}
+    <div
+      className={`bg-transparent border-2 ${
+        props?.error ? 'border-white' : 'border-secondary'
+      } p-2 flex items-center justify-center `}
     >
-      <span className="text-xl">{props.icon}</span>
-      <span className="font-bold text-md ">{props?.content}</span>
-    </button>
+      <button
+        className={` h-fit w-full flex justify-center items-center text-xs   md:text-md gap-2 py-1 px-4 md:mx-1 shadow-md ${
+          props?.error ? 'bg-white' : 'bg-secondary'
+        }  `}
+        onClick={props?.onClick}
+      >
+        <span
+          className={`text-xl ${
+            props?.error ? 'text-secondary' : 'text-white'
+          } `}
+        >
+          {props.icon}
+        </span>
+        <span
+          className={`font-bold text-md shadow-2xl  ${
+            props?.error ? 'text-secondary text-2xl  ' : 'text-white'
+          } `}
+        >
+          {props?.content}
+        </span>
+      </button>
+    </div>
   )
 }
 

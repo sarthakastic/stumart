@@ -74,7 +74,7 @@ const Card = (props) => {
           </div>
         </div>
       )}
-      <div className="rounded-2xl w-72 h-fit pb-2 m-5 border-2 border-gray-500 bg-white ">
+      <div className="rounded-2xl w-72 h-fit pb-2 m-5 border-2 border-primary bg-white ">
         <img
           className="w-72 h-40 rounded-t-2xl "
           src={props?.photos}
@@ -91,16 +91,21 @@ const Card = (props) => {
             </>
           )}
 
-          <div className="flex justify-between items-center text-xs ">
-            <p className=" h-fit w-fit  py-1 px-4 md:mx-1 shadow-md rounded-2xl text-gray-200 bg-gray-700  ">
+          <div className=" justify-between items-center text-xs ">
+            <p className=" h-fit w-fit  py-1 px-4 md:mx-1 shadow-md rounded-2xl text-white bg-primary  ">
               {props?.tag}
             </p>
             {props?.status ? (
-              <div className="bg-gradient-to-bl from-indigo-900 via-indigo-400 to-indigo-900 flex justify-center rounded-lg text-white  text-xl bg-clip-content w-28 ">
+              <div className="bg-gradient-to-bl pt-2 from-secondary via-primary to-ternary flex justify-center rounded-lg text-white  text-sm bg-clip-content w-28 ">
                 Sold
               </div>
             ) : (
-              <Button content={'View more details'} onClick={productDetails} />
+              <p
+                className="py-1 text-primary hover:underline decoration-primary hover:cursor-pointer px-4 "
+                onClick={productDetails}
+              >
+                View more details
+              </p>
             )}
           </div>
           <div className="flex justify-around mt-1">
@@ -111,7 +116,7 @@ const Card = (props) => {
                   {!props?.status && (
                     <AiFillEdit
                       onClick={handleEdit}
-                      className="text-2xl hover:text-white hover:cursor-pointer hover:bg-gray-700 text-gray-700 rounded-full p-1 border-2 border-gray-700 "
+                      className="text-2xl hover:text-white hover:cursor-pointer hover:bg-primary text-primary rounded-full p-1 border-2 border-primary "
                     />
                   )}
 
@@ -124,23 +129,26 @@ const Card = (props) => {
 
                   {props?.status ? (
                     <div
+                      className="text-primary hover:underline decoration-primary "
                       onClick={() =>
                         api
                           .updateProduct(props?.id, { productStatus: false })
                           .then(router.reload())
                       }
                     >
-                      Mark as unsold
+                      {router.pathname.includes('myProfile') &&
+                        'Mark as unsold'}
                     </div>
                   ) : (
                     <div
+                      className="text-primary hover:underline decoration-primary "
                       onClick={() =>
                         api
                           .updateProduct(props?.id, { productStatus: true })
                           .then(router.reload())
                       }
                     >
-                      Mark as sold
+                      {router.pathname.includes('myProfile') && 'Mark as sold'}
                     </div>
                   )}
                 </>

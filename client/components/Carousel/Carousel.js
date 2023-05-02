@@ -6,20 +6,22 @@ import Head from 'next/head'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 import '@splidejs/react-splide/css'
 
-import img1 from '../../public/banner1.jpeg'
-import img2 from '../../public/banner2.jpeg'
+import img1 from '../../public/ai.svg'
+import img2 from '../../public/carousel.svg'
 
 const Carousel = () => {
   const options = {
     type: 'fade',
     rewind: true,
-    width: '100%',
+    width: '80%',
     gap: '1rem',
     autoplay: true,
     pauseOnHover: false,
     resetProgress: false,
-    height: '25rem',
+    height: '',
     arrows: false,
+    rewindByDrag: true,
+    padding: '10px',
   }
 
   return (
@@ -28,7 +30,11 @@ const Carousel = () => {
         <img className="w-full h-full" src={img1.src} alt="Image 1" />
       </SplideSlide>
       <SplideSlide>
-        <img className="w-full h-full" src={img2.src} alt="Image 2" />
+        <img
+          className="w-full rounded-2xl h-full"
+          src={img2.src}
+          alt="Image 2"
+        />
       </SplideSlide>
     </Splide>
   )

@@ -29,35 +29,12 @@ const register = () => {
   }
 
   return (
-    <div className=" flex  ">
-      <div className="w-1/2 min-h-[920px] h-screen hidden md:flex  bg-gray-400  justify-center items-center ">
-        <img className="h-3/4" src={registerIcon.src} />
+    <div className=" flex w-screen ">
+      <div className="w-screen md:w-1/2 min-h-[920px]  bg-ternary shadow-2xl h-screen p-2 flex flex-col items-center justify-center ">
+        <UserInfo />
       </div>
-      <div className="w-screen md:w-1/2 min-h-[920px]  bg-gray-400  h-screen p-2 flex flex-col items-center justify-center ">
-        <div className="text-4xl flex justify-center items-center text-center my-4 font-bold text-gray-700 ">
-          {isSignUp ? (
-            <h1>
-              Hey, it's always good
-              <br /> to see new beautiful faces!
-            </h1>
-          ) : (
-            <h1>
-              Hey, it's always good to
-              <br /> see beautiful faces once again!
-            </h1>
-          )}
-        </div>
-        <div className="bg-white rounded-2xl p-4 flex flex-col  shadow-[rgba(1,_7,_5,_0.2)_0px_60px_40px_-7px]  ">
-          <UserInfo isSignUp={isSignUp} />
-          <div className="flex justify-center">
-            {isSignUp ? 'Already have an account?' : "Don't have an account?"}
-            {isSignUp ? (
-              <Button content="Sign In" onClick={toggleAuth} />
-            ) : (
-              <Button content="Sign Up" onClick={toggleAuth} />
-            )}
-          </div>
-        </div>
+      <div className="w-1/2 min-h-[920px] h-screen hidden md:flex  bg-ternary justify-center items-center ">
+        <img className="h-3/4" src={registerIcon.src} />
       </div>
     </div>
   )

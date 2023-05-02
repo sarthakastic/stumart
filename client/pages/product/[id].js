@@ -15,6 +15,9 @@ import Card from '../../components/PredDefinedComponents/Card'
 // Icons Imports
 import { FiLogIn } from 'react-icons/Fi'
 
+// Images Imports
+import registerIcon from '../../public/register.png'
+
 const Product = () => {
   const router = useRouter()
   const dispatch = useDispatch()
@@ -88,10 +91,11 @@ const Product = () => {
 
   if (!user?.result?.name) {
     return (
-      <div className="h-screen bg-gray-400 flex flex-col justify-center items-center">
-        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-gray-700 ">
+      <div className="h-screen bg-white flex flex-col justify-center items-center">
+        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-primary ">
           Please Sign In to view details.
         </h1>
+
         <Button
           content="Sign Up/Sign In"
           onClick={register}
@@ -102,68 +106,87 @@ const Product = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center bg-gray-400 h-fit  min-h-screen md:min-h-screen py-20 px-2 md:p-20">
-      <div className="rounded-2xl w-full h-full m-5 border-2 flex flex-col md:flex-row items-center  p-2 border-gray-500 bg-white ">
-        <img
-          className="w-28 md:w-72 h-full rounded-2xl "
-          src={productData?.photos}
-          alt="product image"
-        />
-        <div className="flex flex-col w-full m-2 bg-gray-400 rounded-2xl border-2 border-gray-900 justify-evenly px-2">
-          <p className="px2 ">
-            {' '}
-            <span> Title : </span> <br /> {productData?.title}
-          </p>
-          <p className="px-2">
-            {' '}
-            <span> Price : </span> <br /> Rs.{productData?.cost}/-
-          </p>
-          <p className="px-2 flex w-full ">
-            {' '}
-            <span> Details : </span> <br /> {productData?.details}
-          </p>
+    <div className="flex flex-col justify-center items-center bg-white w-screen h-full  min-h-screen md:min-h-screen py-20 px-2 md:p-20">
+      <div className=" w-full  m-5  flex flex-col md:flex-row  p-2  ">
+        <div className="w-full md:w-1/2 bg-secondary p-5 h-[720px]">
+          <div className="bg-transparent border-2 border-ternary h-full p-5 flex items-center justify-center">
+            <img
+              className="h-[600px] w-full "
+              src={productData?.photos}
+              alt="product image"
+            />
+          </div>
+        </div>
 
-          <p className="  ">
-            {' '}
-            <span> Category : </span> <br /> {productData?.category}
-          </p>
-          {address && (
-            <>
-              <p className="px-2">
-                {' '}
-                <span> Name : </span> <br /> {address?.name}{' '}
+        <div className="flex flex-col w-full max-h-[720px] md:w-1/2  bg-ternary  p-5">
+          <div className="border-2 border-secondary h-full p-5 font-montserrat text-primary ">
+            <p className="px-2 ">
+              {' '}
+              <span className="font-bold"> Title : </span> <br />{' '}
+              {productData?.title}
+            </p>
+            <p className="px-2">
+              {' '}
+              <span className="font-bold"> Price : </span> <br /> Rs.
+              {productData?.cost}/-
+            </p>
+            <p className="px-2  ">
+              {' '}
+              <span className="font-bold"> Details : </span> <br />
+              <p className="flex text-clip break-words break-all ">
+                {productData?.details}
               </p>
-              <p className="px-2">
-                {' '}
-                <span> Hostel : </span> <br />
-                {address?.hostel}{' '}
-              </p>
-              <p className="px-2">
-                {' '}
-                <span> Floor : </span> <br /> {address?.floor}{' '}
-              </p>
-              <p className="px-2">
-                {' '}
-                <span> Room No. : </span> <br /> {address?.room}{' '}
-              </p>
-              <p className="px-2">
-                {' '}
-                <span> Contact Number : </span> <br /> {address?.contact}{' '}
-              </p>
-            </>
-          )}
-          <div className="flex justify-between items-center text-xs ">
-            {productData?.status && (
-              <div className="bg-gradient-to-bl from-indigo-900 via-indigo-400 to-indigo-900 flex justify-center rounded-lg text-white translate-y-10 bottom-10 text-xl bg-clip-content w-28 ">
-                Sold
-              </div>
+            </p>
+
+            <p className="  ">
+              {' '}
+              <span className="font-bold"> Category : </span> <br />{' '}
+              {productData?.category}
+            </p>
+            {address && (
+              <>
+                <p className="px-2">
+                  {' '}
+                  <span className="font-bold"> Name : </span> <br />{' '}
+                  {address?.name}{' '}
+                </p>
+                <p className="px-2">
+                  {' '}
+                  <span className="font-bold"> Hostel : </span> <br />
+                  {address?.hostel}{' '}
+                </p>
+                <p className="px-2">
+                  {' '}
+                  <span className="font-bold"> Floor : </span> <br />{' '}
+                  {address?.floor}{' '}
+                </p>
+                <p className="px-2">
+                  {' '}
+                  <span className="font-bold"> Room No. : </span> <br />{' '}
+                  {address?.room}{' '}
+                </p>
+                <p className="px-2">
+                  {' '}
+                  <span className="font-bold">
+                    {' '}
+                    Contact Number :{' '}
+                  </span> <br /> {address?.contact}{' '}
+                </p>
+              </>
             )}
+            <div className="flex justify-between items-center text-xs ">
+              {productData?.status && (
+                <div className="bg-gradient-to-bl from-indigo-900 via-indigo-400 to-indigo-900 flex justify-center rounded-lg text-white translate-y-10 bottom-10 text-xl bg-clip-content w-28 ">
+                  Sold
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      <div className="text-4xl flex justify-center items-center text-center my-4 font-bold text-gray-700 ">
-        Recommended Products
-      </div>
+      <h1 className="font-bold font-montserrat text-xl md:text-5xl w-full flex justify-start p-5 text-white  drop-shadow-[0_2.5px_2.5px_rgba(240,120,120,1)]">
+        Recommended products
+      </h1>
       {productData?.category !== '' && (
         <div className="flex flex-wrap justify-center ">
           {post.length <= 1 && (

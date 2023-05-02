@@ -6,9 +6,14 @@ import { closeError } from '../../slices/errorSlice'
 import FileBase from 'react-file-base64'
 import * as api from '../../api'
 import Error from '../Error'
+import Button from '../PredDefinedComponents/Button'
 
 const UserInfo = (props) => {
-  const { isSignUp } = props
+  const [isSignUp, setIsSignUp] = useState(true)
+
+  const toggleAuth = () => {
+    setIsSignUp((prevAuth) => !prevAuth)
+  }
   const error = useSelector((state) => state?.error)
 
   const initialState = {
@@ -18,6 +23,8 @@ const UserInfo = (props) => {
     password: '',
     phoneNumber: NaN,
   }
+  const authData = useSelector((state) => state?.auth?.authData) // set authdata on sign in/sign up to fetch profile pic in navbar on each change
+  console.log(authData, 'authData')
 
   const dispatch = useDispatch()
 
@@ -31,7 +38,7 @@ const UserInfo = (props) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
 
     props?.editUserInfo && api.editProfile(user?.result?._id, formData)
@@ -43,11 +50,11 @@ const UserInfo = (props) => {
 
     isSignUp &&
       !props?.editUserInfo &&
-      dispatch(signup(formData)).then(router.push('/'))
+      (await dispatch(signup(formData)).then(!error && router.push('/')))
 
     !isSignUp &&
       !props?.editUserInfo &&
-      dispatch(signin(formData)).then(router.push('/'))
+      (await dispatch(signin(formData)).then(!error && router.push('/')))
   }
 
   useEffect(() => {
@@ -74,22 +81,40 @@ const UserInfo = (props) => {
     setUser(initialUser)
   }, [])
 
-  if (user?.result?.name && !props?.editUserInfo) {
-    router.push('/')
-  }
+  useEffect(() => {
+    if (authData && !props?.editUserInfo) {
+      router.push('/')
+    }
+  }, [authData])
 
   return (
-    <div>
-      {error?.isError && <Error error={error?.error} />}
+    <div className="bg-white min-w-fit flex flex-col justify-center items-start p-5 rounded-2xl shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] min-h-fit h-4/5 md:h-4/6 md:w-1/2 ">
+      <div className="text-2xl flex justify-center items-center text-center my-4 font-montserrat font-bold text-secondary ">
+        {!props?.edit &&
+          (isSignUp ? (
+            <h4>
+              Hey, it's always good
+              <br /> to see new beautiful faces!
+            </h4>
+          ) : (
+            <h4>
+              Hey, it's always good to
+              <br /> see beautiful faces once again!
+            </h4>
+          ))}
+      </div>
+      <div className="text-2xl w-full flex justify-center items-center text-center my-4 font-montserrat font-bold text-secondary ">
+        {props?.edit && <h4>Edit your Profile!</h4>}
+      </div>
       <form
-        className="flex flex-col items-center bg-white  "
+        className="flex flex-col items-start bg-white  "
         onSubmit={onSubmit}
       >
         {console.log(formData, 'formdata')}
         {isSignUp && (
           <>
             <input
-              className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+              className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
               type="text"
               name="firstName"
               value={formData?.firstName}
@@ -99,7 +124,7 @@ const UserInfo = (props) => {
             />
 
             <input
-              className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+              className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
               type="text"
               onChange={handleChange}
               required
@@ -111,7 +136,7 @@ const UserInfo = (props) => {
         )}
         {!props?.editUserInfo && (
           <input
-            className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full  w-full "
+            className=" outline-transparent w-3/4 border-b-2 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
             name="phoneNumber"
             onChange={handleChange}
             required
@@ -124,7 +149,7 @@ const UserInfo = (props) => {
         )}
         {!props?.editUserInfo && (
           <input
-            className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+            className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
             type="password"
             name="password"
             required
@@ -134,10 +159,10 @@ const UserInfo = (props) => {
         )}
 
         {isSignUp && (
-          <div className="flex flex-col items-center ">
+          <div className="flex flex-col items-start ">
             {!props?.editUserInfo && (
               <input
-                className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+                className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
                 required
                 type="text"
                 name="confirmPassword"
@@ -146,12 +171,12 @@ const UserInfo = (props) => {
               />
             )}
             <div
-              className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+              className=" outline-transparent border-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
               required
             >
               {!formData?.selectedFile && (
                 <label
-                  className=" rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+                  className=" rounded-2xl m-2 p-1 placeholder-secondary  text-secondary w-full "
                   required
                 >
                   Profile picture (JPEG,PNG)
@@ -182,12 +207,35 @@ const UserInfo = (props) => {
           </div>
         )}
         <p className="text-red-500">{error?.isError && error.error}</p>
-        <input
-          className=" h-fit w-fit  py-1 px-4 md:mx-1 shadow-md shadow-gray-500 rounded-2xl hover:text-gray-200 hover:bg-gray-400 border-gray-400 text-gray-400 border-2 "
-          type="submit"
-          value={isSignUp ? 'Sign Up' : 'Sign In'}
-        />
+        <div className="border-2 border-secondary p-1 bg-transparent my-2">
+          <input
+            className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
+            type="submit"
+            value={props?.edit ? 'Edit' : isSignUp ? 'Sign Up' : 'Sign In'}
+          />
+        </div>
       </form>
+      <div className="bg-white  p-4 flex flex-col   ">
+        <div className="flex justify-center">
+          {isSignUp ? 'Already have an account?' : "Don't have an account?"}
+          {isSignUp ? (
+            <p
+              className="text-secondary ml-2 font-light hover:cursor-pointer decoration-primary hover:underline "
+              onClick={toggleAuth}
+            >
+              Sign In
+            </p>
+          ) : (
+            <p
+              className="text-secondary font-light ml-2 hover:cursor-pointer decoration-primary hover:underline "
+              onClick={toggleAuth}
+            >
+              Sign Up
+            </p>
+          )}
+        </div>
+      </div>
+      {error?.isError && <Error error={error?.error} />}
     </div>
   )
 }

@@ -14,13 +14,11 @@ import { BiImageAdd } from 'react-icons/Bi'
 const Navigation = () => {
   const dispatch = useDispatch()
 
-  const authData = useSelector((state) => state?.auth?.authData)
-
-  console.log('authdata', authData)
+  const authData = useSelector((state) => state?.auth?.authData) // set authdata on sign in/sign up to fetch profile pic in navbar on each change
 
   const router = useRouter()
 
-  const [user, setUser] = useState()
+  const [user, setUser] = useState() // fetch user data from local storage
 
   useEffect(() => {
     const storedProfile = localStorage.getItem('profile')
@@ -49,14 +47,26 @@ const Navigation = () => {
   }
 
   return (
-    <div className="flex justify-around md:justify-between items-center h-full w-full md:w-fit">
-      <Button content="Home" onClick={home} icon={<HiHome />} navbar={true} />
-      <Button
-        content="Add New Product"
+    <div className="flex justify-around gap-2 px-1 md:gap-4 md:justify-between items-center h-full w-full md:w-fit">
+      <span
+        onClick={home}
+        className="flex items-center gap-2 hover:cursor-pointer "
+      >
+        <HiHome className=" text-black font-thin " />
+        <p className="font-montserrat text-sm font-thin text-black hover:underline ">
+          Home
+        </p>
+      </span>
+      <span
         onClick={addProduct}
-        icon={<BiImageAdd />}
-        navbar={true}
-      />
+        className="flex items-center gap-2 hover:cursor-pointer "
+      >
+        <BiImageAdd className=" text-black font-thin" />
+        <p className="font-montserrat font-thin text-sm text-black hover:underline ">
+          Add New Product
+        </p>
+      </span>
+
       {/* if user login then show it's profile pic else sign up/sign in button */}
       {user ? (
         <button className="" onClick={myProfile}>
@@ -67,12 +77,15 @@ const Navigation = () => {
           />
         </button>
       ) : (
-        <Button
-          content="Sign Up/Sign In"
+        <span
           onClick={register}
-          icon={<FiLogIn />}
-          navbar={true}
-        />
+          className="flex items-center gap-2 hover:cursor-pointer "
+        >
+          <FiLogIn className=" text-black font-thin" />
+          <p className="font-montserrat font-thin text-sm text-black hover:underline ">
+            Sign Up/Sign In
+          </p>
+        </span>
       )}
     </div>
   )

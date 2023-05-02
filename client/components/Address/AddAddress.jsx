@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { addAddress, getAddress } from '../../slices/addressSlice'
-import addressIcon from '../../public/address.png'
+import addressIcon from '../../public/address.svg'
 
 import Button from '../PredDefinedComponents/Button'
 import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from 'react-icons/Io'
@@ -55,10 +55,17 @@ const AddAddress = (props) => {
     _id: '',
   })
 
+  /**
+   * The handleChange function updates the state of productData with the new value of the input field
+   * that triggered the onChange event.
+   */
   const handleChange = (e) => {
     setProductData({ ...productData, [e.target.name]: e.target.value })
   }
 
+  /**
+   * The "clear" function sets the "productData" state to default values.
+   */
   const clear = () => {
     setProductData({
       hostel: '',
@@ -66,6 +73,7 @@ const AddAddress = (props) => {
       floor: '',
     })
   }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -105,10 +113,11 @@ const AddAddress = (props) => {
 
   if (!user?.result?.name) {
     return (
-      <div className="h-screen bg-gray-400 flex flex-col justify-center items-center">
-        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-gray-700 ">
-          Please Sign In before adding your address.
+      <div className="h-screen bg-white flex flex-col justify-center items-center">
+        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-primary ">
+          Please Sign In to view details.
         </h1>
+
         <Button
           content="Sign Up/Sign In"
           onClick={register}
@@ -123,155 +132,146 @@ const AddAddress = (props) => {
   }
 
   return (
-    <div className="flex">
-      <div
-        className={`w-1/2 min-h-[920px] hidden h-screen bg-gray-400 ${
-          props?.editUserInfo ? 'hidden' : 'md:flex'
-        } justify-center items-center `}
+    <div className="bg-white rounded-2xl p-4 flex flex-col  shadow-[rgba(1,_7,_5,_0.2)_0px_60px_40px_-7px]  ">
+      <h4 className="text-2xl flex justify-center items-center text-center my-4 font-montserrat font-bold text-secondary ">
+        Add your Hostel Address!
+      </h4>
+      <form
+        className="flex flex-col items-center  justify-start"
+        onSubmit={handleSubmit}
       >
-        <img className="h-3/4" src={addressIcon.src} />
-      </div>
-      <div className="md:w-1/2 w-screen md:min-h-[920px]  bg-gray-400 min-h-screen h-fit md:h-screen p-2 flex flex-col items-center justify-center ">
-        <div className="text-4xl flex justify-center items-center text-center my-4 font-bold text-gray-700 ">
-          <h1>Add your Hostel Address!</h1>
+        <div className="flex items-center w-full m-2">
+          <input
+            className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
+            value={productData?.hostel}
+            placeholder="choose hostel"
+            required
+          />
+          {showHostel ? (
+            <IoMdArrowDropupCircle
+              className="text-3xl hover:cursor-pointer text-ternary"
+              onClick={selectHostel}
+            />
+          ) : (
+            <IoMdArrowDropdownCircle
+              className="text-3xl hover:cursor-pointer  text-ternary"
+              onClick={selectHostel}
+            />
+          )}
         </div>
-        <div className="bg-white rounded-2xl p-4 flex flex-col  shadow-[rgba(1,_7,_5,_0.2)_0px_60px_40px_-7px]  ">
-          <form
-            className="flex flex-col items-center  "
-            onSubmit={handleSubmit}
+        {showHostel && (
+          <select
+            className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
+            name="hostel"
+            required
+            size="3"
+            onChange={handleChange}
           >
-            <div className="flex items-center w-full m-2">
-              <input
-                className="border-2 border-gray-400 rounded-2xl  p-1 text-gray-400 placeholder-gray-400 w-full "
-                value={productData?.hostel}
-                placeholder="choose hostel"
-                required
-              />
-              {showHostel ? (
-                <IoMdArrowDropupCircle
-                  className="text-3xl hover:cursor-pointer text-gray-400"
-                  onClick={selectHostel}
-                />
-              ) : (
-                <IoMdArrowDropdownCircle
-                  className="text-3xl hover:cursor-pointer  text-gray-400"
-                  onClick={selectHostel}
-                />
-              )}
-            </div>
-            {showHostel && (
-              <select
-                className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
-                name="hostel"
-                required
-                size="3"
-                onChange={handleChange}
-              >
-                <option onClick={selectHostel} value="Maharishi Valmiki">
-                  Maharishi Valmiki
-                </option>
-                <option onClick={selectHostel} className="" value="Rahim">
-                  Rahim
-                </option>
-                <option onClick={selectHostel} value="Munshi Prem Chand">
-                  Munshi Prem Chand
-                </option>
-                <option onClick={selectHostel} value="Malik Mohammad">
-                  Malik Mohammad
-                </option>
-                <option onClick={selectHostel} value="Ravidas">
-                  Ravidas
-                </option>
-                <option onClick={selectHostel} value="Kabirdas">
-                  Kabirdas
-                </option>
-                <option onClick={selectHostel} value="Tulsidas">
-                  Tulsidas
-                </option>
-                <option onClick={selectHostel} value="Ghasidas">
-                  Ghasidas
-                </option>
-                <option onClick={selectHostel} value="Birsa Munda">
-                  Birsa Munda
-                </option>
-                <option onClick={selectHostel} value="Ismat Chugtai">
-                  Ismat Chugtai
-                </option>
-                <option onClick={selectHostel} value="Ram Sharandas">
-                  Ram Sharandas
-                </option>
-                <option onClick={selectHostel} value="Narayan Guru">
-                  Narayan Guru
-                </option>
-                <option onClick={selectHostel} value="Ghasidas">
-                  Ghasidas
-                </option>
-                <option onClick={selectHostel} value="Ghasidas">
-                  Ghasidas
-                </option>
-              </select>
-            )}
-            <div className="flex items-center w-full m-2 ">
-              <input
-                className="border-2 border-gray-400 rounded-2xl  p-1 text-gray-400 placeholder-gray-400 w-full "
-                value={productData?.floor}
-                placeholder="choose floor"
-                required
-              />
+            <option onClick={selectHostel} value="Maharishi Valmiki">
+              Maharishi Valmiki
+            </option>
+            <option onClick={selectHostel} className="" value="Rahim">
+              Rahim
+            </option>
+            <option onClick={selectHostel} value="Munshi Prem Chand">
+              Munshi Prem Chand
+            </option>
+            <option onClick={selectHostel} value="Malik Mohammad">
+              Malik Mohammad
+            </option>
+            <option onClick={selectHostel} value="Ravidas">
+              Ravidas
+            </option>
+            <option onClick={selectHostel} value="Kabirdas">
+              Kabirdas
+            </option>
+            <option onClick={selectHostel} value="Tulsidas">
+              Tulsidas
+            </option>
+            <option onClick={selectHostel} value="Ghasidas">
+              Ghasidas
+            </option>
+            <option onClick={selectHostel} value="Birsa Munda">
+              Birsa Munda
+            </option>
+            <option onClick={selectHostel} value="Ismat Chugtai">
+              Ismat Chugtai
+            </option>
+            <option onClick={selectHostel} value="Ram Sharandas">
+              Ram Sharandas
+            </option>
+            <option onClick={selectHostel} value="Narayan Guru">
+              Narayan Guru
+            </option>
+            <option onClick={selectHostel} value="Ghasidas">
+              Ghasidas
+            </option>
+            <option onClick={selectHostel} value="Ghasidas">
+              Ghasidas
+            </option>
+          </select>
+        )}
+        <div className="flex items-center w-full m-2 ">
+          <input
+            className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
+            value={productData?.floor}
+            placeholder="choose floor"
+            required
+          />
 
-              {showFloor ? (
-                <IoMdArrowDropupCircle
-                  className="text-3xl hover:cursor-pointer text-gray-400"
-                  onClick={selectFloor}
-                />
-              ) : (
-                <IoMdArrowDropdownCircle
-                  className="text-3xl hover:cursor-pointer  text-gray-400"
-                  onClick={selectFloor}
-                />
-              )}
-            </div>
-            {showFloor && (
-              <select
-                className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
-                name="floor"
-                required
-                size="3"
-                onChange={handleChange}
-              >
-                <option onClick={selectFloor} value="Ground">
-                  Ground
-                </option>
-                <option onClick={selectFloor} className="" value="First">
-                  First
-                </option>
-                <option onClick={selectFloor} value="Second">
-                  Second
-                </option>
-                <option onClick={selectFloor} value="Third">
-                  Third
-                </option>
-              </select>
-            )}
-            <input
-              type="number"
-              className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
-              min="1"
-              max="152"
-              name="room"
-              value={productData?.room}
-              required
-              onChange={handleChange}
-              placeholder="Room Number"
+          {showFloor ? (
+            <IoMdArrowDropupCircle
+              className="text-3xl hover:cursor-pointer text-ternary"
+              onClick={selectFloor}
             />
-            <input
-              className=" h-fit w-fit  py-1 px-4 md:mx-1 shadow-md shadow-gray-500 rounded-2xl hover:text-gray-200 hover:bg-gray-400 border-gray-400 text-gray-400 border-2 "
-              type="submit"
-              value="Add"
+          ) : (
+            <IoMdArrowDropdownCircle
+              className="text-3xl hover:cursor-pointer  text-ternary"
+              onClick={selectFloor}
             />
-          </form>
+          )}
         </div>
-      </div>
+        {showFloor && (
+          <select
+            className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
+            name="floor"
+            required
+            size="3"
+            onChange={handleChange}
+          >
+            <option onClick={selectFloor} value="Ground">
+              Ground
+            </option>
+            <option onClick={selectFloor} className="" value="First">
+              First
+            </option>
+            <option onClick={selectFloor} value="Second">
+              Second
+            </option>
+            <option onClick={selectFloor} value="Third">
+              Third
+            </option>
+          </select>
+        )}
+        <input
+          type="number"
+          className=" outline-transparent flex justify-start border-b-2 w-full my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
+          min="1"
+          max="152"
+          name="room"
+          value={productData?.room}
+          required
+          onChange={handleChange}
+          placeholder="Room Number"
+        />
+        <div className="border-2 border-secondary p-1 bg-transparent my-2">
+          <input
+            className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
+            type="submit"
+            value={'Add'}
+          />
+        </div>
+      </form>
     </div>
   )
 }

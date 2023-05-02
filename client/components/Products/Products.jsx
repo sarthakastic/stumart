@@ -62,11 +62,14 @@ const Products = () => {
   return (
     <>
       {currentRoute.includes('home') && (
-        <h1 className="font-bold text-4xl pt-20 text-gray-700" id="product">
+        <h1
+          className="font-bold w-full flex justify-start pl-14 text-4xl pt-20 text-white shadow-primary "
+          id="product"
+        >
           All Products
         </h1>
       )}
-      <div className={`flex flex-wrap w-screen justify-center  `}>
+      <div className={`flex flex-wrap w-screen justify-evenly  `}>
         {postData &&
           postData.map((i) => (
             <Card
@@ -83,7 +86,7 @@ const Products = () => {
         {!currentRoute.includes('home') && (
           <a
             href="/home"
-            className="flex justify-center  items-center text-gray-400 ml-10 md:m-10 "
+            className="flex justify-center decoration-primary hover:underline  items-center text-primary ml-10 md:m-10 "
           >
             View all products &nbsp; <AiOutlineArrowRight />{' '}
           </a>

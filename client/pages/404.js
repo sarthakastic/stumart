@@ -1,5 +1,5 @@
 import React from 'react'
-import lostIcon from '../public/lost.png'
+import lostIcon from '../public/lost.svg'
 import { HiHome } from 'react-icons/Hi'
 import Button from '../components/PredDefinedComponents/Button'
 
@@ -12,7 +12,7 @@ const lost = () => {
     router.push('/')
   }
   return (
-    <div className="h-screen bg-gray-400 flex flex-col justify-center items-center">
+    <div className="h-screen bg-white flex flex-col justify-center items-center">
       <img
         className="md:w-1/2 md:h-3/4"
         src={lostIcon.src}

@@ -103,3 +103,16 @@ export const deleteProduct = (id) =>
       'X-Custom-Header': 'foobar',
     },
   })
+
+// FEEDBACK API's
+
+// used to add feedback
+export const addFeedback = (formData) =>
+  API.post('/feedback', formData, {
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem('profile')).token
+      }`,
+      'X-Custom-Header': 'foobar',
+    },
+  })

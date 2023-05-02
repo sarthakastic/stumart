@@ -27,8 +27,8 @@ const Pagination = () => {
         {pages.map((data) => (
           <button
             key={data.key}
-            className={`rounded-full p-2 flex border-2 cursor-pointer ${
-              pageNo === data?.value ? 'bg-slate-400' : null
+            className={` p-2 h-8 w-8 flex items-center justify-center border-2 font-semibold text-primary border-primary cursor-pointer ${
+              pageNo === data?.value ? 'bg-primary text-white' : null
             } `}
             onClick={() => inc(data?.value)}
           >

@@ -1,52 +1,53 @@
-import React, { useEffect, useState } from "react";
+// Native Imports
+import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
 
-import { useDispatch, useSelector } from "react-redux";
-import { searchProducts } from "../../slices/productSlice";
-import { useRouter } from "next/router";
-import { BiSearchAlt } from "react-icons/Bi";
+// Redux Imports
+import { searchProducts } from '../../slices/productSlice'
+
+// Icons Imports
+import { BiSearchAlt } from 'react-icons/Bi'
 
 const Search = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const [search, setSearchData] = useState();
-  const [category, setCategory] = useState("");
-  const router = useRouter();
+  const router = useRouter()
 
-  const clear = () => {
-    setCurrentId(null);
-    setProductData("");
-  };
+  const [search, setSearchData] = useState() // search value
+
+  const [category, setCategory] = useState('') // set category as empty string
 
   const handleChange = (e) => {
-    setSearchData(e.target.value);
-  };
+    setSearchData(e.target.value)
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     search &&
       dispatch(searchProducts({ search, category })).then(
-        router.push("/search")
-      );
-  };
+        router.push('/search')
+      )
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="flex items-center  " onSubmit={handleSubmit}>
       <input
         type="text"
         name="search"
-        placeholder="Search"
+        placeholder="Search for Products"
         onChange={handleChange}
-        className="border-2 border-gray-500 focus:border-gray-500 focus:outline-none text-gray-400 placeholder-gray-400 rounded-2xl p-1 "
+        className=" border-b-2 border-primary text-primary caret-primary focus:border-0 outline-primary "
       />
       <button
-        className=" h-fit w-fit  py-1 px-4 md:mx-1 shadow-md shadow-gray-500 rounded-2xl hover:text-gray-200 hover:bg-gray-400 border-gray-400 text-gray-400 border-2 "
+        className=" h-fit w-fit  py-1 px-4 mx-1 font-montserrat  border-2 border-primary hover:text-white hover:bg-primary  text-primary  "
         type="submit"
         placeholder="Search"
       >
         <BiSearchAlt />
       </button>
     </form>
-  );
-};
+  )
+}
 
-export default Search;
+export default Search

@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { setError } from './errorSlice'
 import * as api from '../api/index'
-import { useDispatch } from 'react-redux'
 
 export const signin = createAsyncThunk(
   'signin',

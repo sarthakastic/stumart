@@ -27,6 +27,8 @@ const MyProfile = () => {
 
   const data = useSelector((state) => state?.posts)
 
+  const error = useSelector((state) => state?.error)
+
   const [user, setUser] = useState() // set localstorage data
 
   const [postData, setPostData] = useState([]) // set user products
@@ -111,10 +113,11 @@ const MyProfile = () => {
   // if user not login
   if (!user?.result?.name) {
     return (
-      <div className="h-screen bg-gray-400 flex flex-col justify-center items-center">
-        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-gray-700 ">
+      <div className="h-screen bg-white flex flex-col justify-center items-center">
+        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-primary ">
           Please Sign In to view details.
         </h1>
+
         <Button
           content="Sign Up/Sign In"
           onClick={register}
@@ -125,89 +128,95 @@ const MyProfile = () => {
   }
 
   return (
-    <div className={`py-20  min-h-screen  `}>
+    <div className={`py-20  min-h-screen bg-white `}>
       <div className="w-full px-10 flex justify-center md:justify-between ">
         {/* user all info div */}
-        <div className="flex w-full flex-col md:flex-row bg-gray-300 rounded-2xl p-5 md:justify-between justify-evenly shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] ">
+        <div className="flex w-full flex-col md:flex-row bg-primary  p-5 md:justify-between justify-evenly ">
           {/* user info div */}
-          <div className="flex flex-col items-center ">
-            <img
-              className="rounded-full w-40 h-40"
-              src={user?.result?.selectedFile}
-            />
-            <div className="flex flex-col items-center justify-center ">
-              <p className="font-bold text-gray-700 ">{user?.result?.name}</p>
-              <p className="font-bold text-gray-700 ">
-                {user?.result?.phoneNumber}
-              </p>
-            </div>
-            <Button
-              onClick={handleEdit}
-              content="Edit Profile"
-              icon={<AiFillEdit />}
-            />
+          <div className="flex flex-col w-full  items-center md:items-start ">
+            <img className=" w-52 h-40" src={user?.result?.selectedFile} />
           </div>
+          <div className="flex w-full flex-col items-center justify-center ">
+            <p className="font-bold  text-white font-montserrat  ">
+              {user?.result?.name}
+            </p>
+            <p className="font-bold text-white font-montserrat ">
+              {user?.result?.phoneNumber}
+            </p>
+            {address?.hostel && (
+              <div className="mt-2 flex flex-col items-center justify-center ">
+                <p className="font-bold  text-white font-montserrat">
+                  {address?.hostel} Hostel{' '}
+                </p>
+                <p className="font-bold  text-white font-montserrat">
+                  {address?.floor} Floor{' '}
+                </p>
+                <p className="font-bold  text-white font-montserrat">
+                  Room No. {address?.room}
+                </p>
+              </div>
+            )}
+          </div>
+
           {/* desktop view product stats */}
           <div className="w-full hidden md:flex justify-around items-center  ">
-            <div className="flex flex-col justify-center items-center border-gray-700 border-2 p-2 rounded-2xl ">
-              <p className="font-bold text-gray-700 text-2xl ">
-                {' '}
-                Total Products
-              </p>
-              <p className="font-bold text-gray-700 text-2xl ">
+            <div className="flex flex-col justify-center items-center    ">
+              <p className="font-bold text-white text-2xl "> Total Products</p>
+              <p className="font-bold text-white text-2xl ">
                 {' '}
                 {postData?.length}
               </p>
+              {/* </div>
+            <div className="flex flex-col justify-center items-center  border-gray-700 border-2 p-2 rounded-2xl"> */}
+              <p className="font-bold text-white text-2xl ">Sold Products</p>
+              <p className="font-bold text-white text-2xl ">
+                {' '}
+                {postData?.filter((i) => i.productStatus === true).length}
+              </p>
             </div>
-            <div className="flex flex-col justify-center items-center  border-gray-700 border-2 p-2 rounded-2xl">
-              <p className="font-bold text-gray-700 text-2xl ">Sold Products</p>
-              <p className="font-bold text-gray-700 text-2xl ">
+          </div>
+          <div className="w-full flex flex-col md:hidden justify-around items-center mt-5 ">
+            <div className="flex flex-col justify-center items-center">
+              <p className="font-bold text-white">Total Products</p>
+              <p className="font-bold text-white"> {postData?.length}</p>
+            </div>
+            <div className="flex flex-col justify-center items-center">
+              <p className="font-bold text-white"> Sold Products</p>
+              <p className="font-bold text-white">
                 {' '}
                 {postData?.filter((i) => i.productStatus === true).length}
               </p>
             </div>
           </div>
           {/* address info */}
-          <div className="flex flex-col my-5 md:my-0 justify-center items-center md:items-start  ">
-            {address?.hostel ? (
-              <>
-                <p className="font-bold text-gray-700">
-                  {address?.hostel} Hostel{' '}
-                </p>
-                <p className="font-bold text-gray-700">
-                  {address?.floor} Floor{' '}
-                </p>
-                <p className="font-bold text-gray-700">
-                  Room No. {address?.room}
-                </p>
-                <Button onClick={handleAddressEdit} content="Edit Address" />
-              </>
-            ) : (
+          <div className="flex w-full flex-col my-5 md:my-0 justify-center items-center md:items-end  ">
+            <div className="flex flex-col ">
+              {address?.hostel ? (
+                <Button
+                  onClick={handleAddressEdit}
+                  content="Edit Address"
+                  icon={<BiLocationPlus />}
+                />
+              ) : (
+                <Button
+                  content="Add Address"
+                  onClick={addAddress}
+                  icon={<BiLocationPlus />}
+                />
+              )}
+              <span className="mt-2"></span>
               <Button
-                content="Add Address"
-                onClick={addAddress}
-                icon={<BiLocationPlus />}
+                onClick={handleEdit}
+                content="Edit Profile"
+                icon={<AiFillEdit />}
               />
-            )}
-            <span className="mt-2"></span>
-            <Button
-              content="Sign Out"
-              onClick={handleLogOut}
-              icon={<FiLogIn />}
-            />
-          </div>
-          {/* mobile view product stats */}
-          <div className="w-full flex flex-col md:hidden justify-around items-center ">
-            <div className="flex flex-col justify-center items-center">
-              <p className="font-bold text-gray-700">Total Products</p>
-              <p className="font-bold text-gray-700"> {postData?.length}</p>
-            </div>
-            <div className="flex flex-col justify-center items-center">
-              <p className="font-bold text-gray-700"> Sold Products</p>
-              <p className="font-bold text-gray-700">
-                {' '}
-                {postData?.filter((i) => i.productStatus === true).length}
-              </p>
+
+              <span className="mt-2"></span>
+              <Button
+                content="Sign Out"
+                onClick={handleLogOut}
+                icon={<FiLogIn />}
+              />
             </div>
           </div>
         </div>
@@ -225,54 +234,49 @@ const MyProfile = () => {
           </h1>
         )}
         {postData.map((i) => (
-          <div className="border-[1px] mt-1 bg-gray-100 rounded-xl shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] ">
-            <Card
-              key={i._id}
-              price={i.cost}
-              name={i.title}
-              tag={i.category}
-              photos={i.photos[0]}
-              status={i.productStatus}
-              creator={i.creator}
-              id={i._id}
-            />
-          </div>
+          <Card
+            key={i._id}
+            price={i.cost}
+            name={i.title}
+            tag={i.category}
+            photos={i.photos[0]}
+            status={i.productStatus}
+            creator={i.creator}
+            id={i._id}
+          />
         ))}
       </div>
 
       {/* edit user info */}
       {edit && (
         <div className="fixed inset-0 z-10  bg-black bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center ">
-          <div
-            onClick={handleEdit}
-            className="text-2xl flex items-start bg-red-400 hover:text-white hover:cursor-pointer hover:bg-gray-700 rounded-full p-1 border-2 border-gray-700 "
-          >
-            <ImCross />
-          </div>
-          <h2 className=" text-gray-700 font-bold ">Edit Product!</h2>
-          <div className="h-1/2 w-1/2 ">
-            <UserInfo isSignUp={true} editUserInfo={true} />
+          <div className=" bg-transparent flex  justify-center items-center ">
+            <div className="">
+              <UserInfo isSignUp={true} edit={true} editUserInfo={true} />
+              <br />
+              <Button content={'Close'} error={false} onClick={handleEdit} />
+            </div>
           </div>
         </div>
       )}
 
       {/* edit address */}
       {editAddress && (
-        <>
-          <div className="fixed inset-0 z-10  bg-black bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center ">
-            <div
-              onClick={handleAddressEdit}
-              className="text-2xl flex items-start bg-red-400 hover:text-white hover:cursor-pointer hover:bg-gray-700 rounded-full p-1 border-2 border-gray-700 "
-            >
-              <ImCross />
-            </div>
-            <h2 className=" text-gray-700 font-bold ">Edit Product!</h2>
-            <div className="h-1/2 w-1/2 ">
+        <div className="fixed inset-0 z-10  bg-black bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center ">
+          <div className=" bg-transparent flex  justify-center items-center ">
+            <div className="">
               <AddAddress id={user?.result?._id} editUserInfo={true} />
+              <br />
+              <Button
+                content={'Close'}
+                error={false}
+                onClick={handleAddressEdit}
+              />
             </div>
           </div>
-        </>
+        </div>
       )}
+      {error?.isError && <Error error={error?.error} />}
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { setError } from './errorSlice'
 import * as api from '../api/index'
 
 export const fetchProducts = createAsyncThunk(
@@ -17,11 +18,12 @@ export const fetchProducts = createAsyncThunk(
 
 export const createProducts = createAsyncThunk(
   'createProduct',
-  async (formData, { rejectWithValue }) => {
+  async (formData, { dispatch, rejectWithValue }) => {
     try {
       const { data } = await api.createProduct(formData)
       return data
     } catch (error) {
+      dispatch(setError(error?.response?.data?.message))
       return rejectWithValue(error?.data)
     }
   }

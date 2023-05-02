@@ -53,7 +53,7 @@ export const category = [
   { key: 8, category: 'Heater', icon: <FaDumpsterFire className="text-3xl" /> },
   {
     key: 9,
-    category: 'Induction/kettle',
+    category: 'Induction or kettle',
     icon: <FaMugHot className="text-3xl" />,
   },
   {

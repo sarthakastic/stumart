@@ -13,6 +13,7 @@ import Button from '../PredDefinedComponents/Button'
 import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from 'react-icons/Io'
 import { FiLogIn } from 'react-icons/Fi'
 import { BiLocationPlus } from 'react-icons/Bi'
+import Error from '../Error'
 import Gpt from '../gpt'
 import * as api from '../../api/index'
 
@@ -20,6 +21,8 @@ const AddProducts = (props) => {
   const dispatch = useDispatch()
 
   const router = useRouter()
+
+  const error = useSelector((state) => state?.error)
 
   const [user, setUser] = useState()
   const [address, setAddress] = useState([])
@@ -77,13 +80,23 @@ const AddProducts = (props) => {
     }
   }, [user])
 
+  const reload = () => {
+    router.reload('/product')
+    return
+  }
+
+  const replace = () => {
+    router.replace('/')
+    return
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (id === 0) {
       await dispatch(
         createProducts({ ...productData, name: user?.result?.name })
-      ).then(router.replace('/'))
+      ).then(error?.isError ? reload : replace)
       clear()
     } else {
       api
@@ -131,10 +144,11 @@ const AddProducts = (props) => {
 
   if (!user?.result?.name) {
     return (
-      <div className="h-screen bg-gray-400 flex flex-col  justify-center items-center">
-        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-gray-700 ">
-          Please Sign In before adding your product.
+      <div className="h-screen bg-white flex flex-col justify-center items-center">
+        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-primary ">
+          Please Sign In to view details.
         </h1>
+
         <Button
           content="Sign Up/Sign In"
           onClick={register}
@@ -160,22 +174,29 @@ const AddProducts = (props) => {
   }
 
   return (
-    <div className=" flex items-center justify-center">
+    <div className=" flex items-center justify-center flex-col bg-white shadow-2xl rounded-2xl ">
+      <h4 className="text-2xl flex justify-center items-center text-center my-4 font-montserrat font-bold text-secondary ">
+        Add your Product!
+      </h4>
       <form
-        className="flex flex-col  items-center m-2 justify-center bg-white p-5 rounded-2xl"
+        className="flex flex-col  items-start m-2 justify-center bg-white p-5 rounded-2xl"
         onSubmit={handleSubmit}
       >
         <input
-          className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+          className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
           type="text"
           name="title"
+          maxLength={25}
           required
           value={productData?.title}
           onChange={handleChange}
           placeholder="Title"
         />
+        <p className="w-full flex justify-end text-primary font-thin ">
+          {25 - productData?.title?.length}/25
+        </p>
         <input
-          className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+          className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
           type="number"
           name="cost"
           value={productData?.cost}
@@ -184,43 +205,51 @@ const AddProducts = (props) => {
           placeholder="Cost"
         />
         <textarea
-          className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+          className=" outline-transparent border-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
           type="text"
           name="details"
+          maxLength={300}
           required
           value={productData?.details}
           onChange={handleChange}
           placeholder="Details"
         />
-        <div className="text-gray-500 font-bold text-xs m-2">
+        <p className="w-full flex justify-end text-primary font-thin ">
+          {300 - productData?.details?.length}/300
+        </p>
+        <div className="text-secondary font-bold text-xs m-2">
           Don't know exactly what to write in details? Use AI to write it for
           you.{' '}
-          <span
-            onClick={handleAi}
-            className="border-2 hover:cursor-pointer hover:text-gray-200 hover:bg-gray-400 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-fit "
-          >
-            Use AI
-          </span>
+          <div className="w-fit p-[0.1px] mt-1 border-[1px] border-primary">
+            <div
+              onClick={handleAi}
+              className="border-2 hover:cursor-pointer px-5 hover:text-white hover:bg-secondary border-secondary m-2 p-1 text-secondary placeholder-gray-400 w-fit "
+            >
+              Use AI
+            </div>
+          </div>
         </div>
         {useAi && (
           <div className=" w-full h-fit ">
             <input
-              className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+              className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
               placeholder="Enter prompt here!"
               type="text"
               value={gpt}
               onChange={(e) => setGpt(e.target.value)}
             />
-            <div className="m-2 text-gray-500 font-bold text-xs">
+            <div className="m-2 text-secondary font-bold text-xs">
               {' '}
               Try "Write a post for selling iphone 14 used 6 months in 50 words"
-              <span
-                className="border-2 hover:cursor-pointer hover:text-gray-200 hover:bg-gray-400 border-gray-400 rounded-2xl m-1 p-1 text-gray-400 placeholder-gray-400 w-fit "
-                onClick={handleGpt}
-              >
-                {' '}
-                Ask AI
-              </span>
+              <div className="w-fit p-[0.1px] border-[1px] border-primary mt-1">
+                <div
+                  className="border-2 px-5 hover:cursor-pointer hover:text-white hover:bg-secondary border-secondary m-1 p-1 text-secondary placeholder-gray-400 w-fit "
+                  onClick={handleGpt}
+                >
+                  {' '}
+                  Ask AI
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -228,25 +257,25 @@ const AddProducts = (props) => {
         <div className="flex items-center w-full ">
           <input
             required
-            className="border-2 border-gray-400 rounded-2xl  p-1 text-gray-400 placeholder-gray-400 w-full "
+            className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
             value={productData?.category}
             placeholder="choose category"
           />
           {showOption ? (
             <IoMdArrowDropupCircle
-              className="text-3xl hover:cursor-pointer text-gray-400"
+              className="text-3xl hover:cursor-pointer text-secondary"
               onClick={selectOption}
             />
           ) : (
             <IoMdArrowDropdownCircle
-              className="text-3xl hover:cursor-pointer  text-gray-400"
+              className="text-3xl hover:cursor-pointer  text-secondary"
               onClick={selectOption}
             />
           )}
         </div>
         {showOption && (
           <select
-            className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+            className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
             name="category"
             required
             value={productData?.category}
@@ -277,8 +306,8 @@ const AddProducts = (props) => {
             <option onClick={selectOption} value="Heater">
               Heater
             </option>
-            <option onClick={selectOption} value="Induction/Kettle">
-              Induction/Kettle
+            <option onClick={selectOption} value="Induction or Kettle">
+              Induction or Kettle
             </option>
             <option onClick={selectOption} value="Laptop">
               Laptop
@@ -307,12 +336,12 @@ const AddProducts = (props) => {
           </select>
         )}
         <div
-          className="border-2 border-gray-400 rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+          className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
           required
         >
           {!productData?.photos && (
             <label
-              className=" rounded-2xl m-2 p-1 text-gray-400 placeholder-gray-400 w-full "
+              className=" rounded-2xl m-2 p-1 text-secondary placeholder-secondary w-full "
               required
             >
               Add Image (JPEG,PNG)
@@ -335,12 +364,16 @@ const AddProducts = (props) => {
           }
           accept="image/png,image/jpeg"
         />
-        <input
-          className=" h-fit w-fit  py-1 px-4 md:mx-1 shadow-md shadow-gray-500 rounded-2xl hover:text-gray-200 hover:bg-gray-400 border-gray-400 text-gray-400 border-2 "
-          type="submit"
-          value="add"
-        />
+        <div className="border-2 border-secondary p-1 bg-transparent my-2">
+          <input
+            className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
+            type="submit"
+            value={'Add'}
+          />
+        </div>
       </form>
+
+      {error?.isError && <Error error={error?.error} />}
     </div>
   )
 }

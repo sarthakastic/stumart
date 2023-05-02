@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
-import FileBase from 'react-file-base64'
-import {
-  createProducts,
-  getProduct,
-  updateProduct,
-} from '../slices/productSlice'
+
 import { getAddress } from '../slices/addressSlice'
+
 import Button from '../components/PredDefinedComponents/Button'
-import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from 'react-icons/Io'
+import AddProducts from '../components/Products/AddProducts'
+
 import { FiLogIn } from 'react-icons/Fi'
 import { BiLocationPlus } from 'react-icons/Bi'
-import Gpt from '../components/gpt'
-import * as api from '../api/index'
-import AddProducts from '../components/Products/AddProducts'
+
+import registerIcon from '../public/register.png'
+import addPost from '../public/addPost.svg'
+import addressIcon from '../public/address.svg'
 
 const Product = (props) => {
   const dispatch = useDispatch()
@@ -24,47 +21,11 @@ const Product = (props) => {
 
   const [user, setUser] = useState()
   const [address, setAddress] = useState([])
-  const [showOption, setShowOPtion] = useState(false)
-  const [showGpt, setShowGpt] = useState(false)
-  const [gpt, setGpt] = useState('')
-  const [useAi, setUseAi] = useState(false)
-
-  const [id, setId] = useState(0)
 
   useEffect(() => {
     const storedProfile = localStorage.getItem('profile')
     const initialUser = storedProfile ? JSON.parse(storedProfile) : null
     setUser(initialUser)
-  }, [])
-
-  // const post = useSelector((state) =>
-  //   currentId ? state.posts.posts.find((p) => p._id === currentId) : null
-  // )
-
-  const selectOption = () => {
-    setShowOPtion((option) => !option)
-  }
-
-  const [productData, setProductData] = useState({
-    title: '',
-    cost: NaN,
-    details: '',
-    photos: '',
-    category: '',
-  })
-
-  useEffect(() => {
-    props?.id &&
-      dispatch(getProduct(props?.id))
-        .then((response) => {
-          const product = response?.payload
-          console.log(product, 'id product upfdate')
-          setProductData(product)
-          setId(props?.id)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
   }, [])
 
   useEffect(() => {
@@ -81,51 +42,6 @@ const Product = (props) => {
     }
   }, [user])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    if (id === 0) {
-      await dispatch(
-        createProducts({ ...productData, name: user?.result?.name })
-      ).then(router.push('/'))
-      clear()
-    } else {
-      console.log('called else')
-      api
-        .updateProduct(id, { ...productData, name: user?.result?.name })
-        .then((result) => {
-          router.reload()
-          clear()
-        })
-        .catch((error) => {
-          console.log(error, 'not updated')
-        })
-    }
-  }
-
-  const clear = () => {
-    setId(0)
-    setProductData({
-      title: '',
-      cost: NaN,
-      details: '',
-      photos: '',
-      category: '',
-    })
-  }
-
-  const handleChange = (e) => {
-    setProductData({ ...productData, [e.target.name]: e.target.value })
-  }
-
-  const handleGpt = () => {
-    setShowGpt((option) => !option)
-  }
-
-  const handleAi = () => {
-    setUseAi((option) => !option)
-  }
-
   const register = () => {
     router.push('/register')
   }
@@ -136,10 +52,11 @@ const Product = (props) => {
 
   if (!user?.result?.name) {
     return (
-      <div className="h-screen bg-gray-400 flex flex-col justify-center items-center">
-        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-gray-700 ">
+      <div className="h-screen bg-white flex flex-col justify-center items-center">
+        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold font-montserrat text-primary ">
           Please Sign In before adding your product.
         </h1>
+        <img className="h-1/2 md:h-3/4" src={registerIcon.src} />
         <Button
           content="Sign Up/Sign In"
           onClick={register}
@@ -151,10 +68,11 @@ const Product = (props) => {
 
   if (!address?.name) {
     return (
-      <div className="h-screen bg-gray-400 flex flex-col justify-center items-center">
-        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-gray-700 ">
+      <div className="h-screen bg-white flex flex-col justify-center items-center">
+        <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-primary ">
           Please Add your Address before posting.
         </h1>
+        <img className="h-1/2" src={addressIcon.src} />
         <Button
           content="Add Address"
           onClick={addressPath}
@@ -165,8 +83,13 @@ const Product = (props) => {
   }
 
   return (
-    <div className="h-screen flex justify-center   bg-gray-700 ">
-      <AddProducts />
+    <div className="h-screen min-h-fit overflow-y-scroll items-start md:items-center flex justify-center   bg-ternary">
+      <div className=" hidden md:flex md:w-1/2 items-center justify-center   ">
+        <img className="h-1/2 md:h-3/4" src={addPost.src} />
+      </div>
+      <div className="flex h-3/4 md:h-full md:w-1/2 items-center md:mt-0 mt-20 justify-center  ">
+        <AddProducts />
+      </div>
     </div>
   )
 }

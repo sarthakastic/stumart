@@ -25,7 +25,7 @@ const CategoryProduct = () => {
   }, [category])
 
   return (
-    <div className={`py-20 ${post?.length === 0 && 'bg-gray-400'}`}>
+    <div className={`py-20 ${post?.length === 0 && 'bg-white'}`}>
       {post.length > 0 && (
         <h1 className="font-bold text-4xl w-full flex text-center justify-start p-5 text-gray-700">
           Products in {category}

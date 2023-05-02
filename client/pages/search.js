@@ -1,9 +1,18 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import Card from '../components/PredDefinedComponents/Card'
+import NoPosts from '../components/PredDefinedComponents/NoPosts'
 
 const search = () => {
   const post = useSelector((posts) => posts?.posts?.posts)
+
+  if (post.length === 0) {
+    return (
+      <div className="py-20">
+        <NoPosts heading=" Oops! No results." />
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-wrap justify-center py-20 ">
