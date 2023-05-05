@@ -35,6 +35,58 @@ export const signin = async (req, res) => {
   }
 };
 
+export const validateSignUp = async (req, res) => {
+  const data = req;
+  console.log(data, "data");
+
+  const { phoneNumber, password, confirmPassword, selectedFile } = req.body;
+  console.log(
+    phoneNumber,
+    password,
+    confirmPassword,
+
+    "inside api"
+  );
+
+  const existingUser = await User.findOne({ phoneNumber });
+  if (existingUser) {
+    return res.status(400).json({ message: "User already exists." });
+  }
+
+  if (password !== confirmPassword) {
+    return res.status(400).json({ message: "Passwords don't match." });
+  }
+
+  // Convert selectedFile to file object
+  const fileBuffer = Buffer.from(selectedFile, "base64");
+
+  // Write file buffer to a temporary file
+  const tempFilePath = "/tmp/" + Date.now() + "-tempfile";
+  fs.writeFileSync(tempFilePath, fileBuffer);
+
+  // Check file size
+  const stats = fs.statSync(tempFilePath);
+  const fileSizeInBytes = stats.size;
+  const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+  fs.unlinkSync(tempFilePath); // Delete temporary file
+
+  if (fileSizeInMB > 30) {
+    return res.status(400).json({ message: "File size exceeds 30MB." });
+  }
+
+  const fileExtension = selectedFile.split(";")[0].split("/")[1];
+  const mimeType = mimeTypes.lookup(fileExtension);
+
+  // Add allowed file types here
+  const allowedMimeTypes = ["image/jpeg", "image/png", "image/jpg"];
+
+  if (!mimeType || !allowedMimeTypes.includes(mimeType)) {
+    return res.status(400).json({ message: "Invalid file type." });
+  }
+
+  return res.status(200).json({ message: "Sign Up data is valid" });
+};
+
 export const signup = async (req, res) => {
   const {
     phoneNumber,
@@ -45,41 +97,41 @@ export const signup = async (req, res) => {
     selectedFile,
   } = req.body;
   try {
-    const existingUser = await User.findOne({ phoneNumber });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists." });
-    }
+    // const existingUser = await User.findOne({ phoneNumber });
+    // if (existingUser) {
+    //   return res.status(400).json({ message: "User already exists." });
+    // }
 
-    if (password !== confirmPassword) {
-      return res.status(400).json({ message: "Passwords don't match." });
-    }
+    // if (password !== confirmPassword) {
+    //   return res.status(400).json({ message: "Passwords don't match." });
+    // }
 
-    // Convert selectedFile to file object
-    const fileBuffer = Buffer.from(selectedFile, "base64");
+    // // Convert selectedFile to file object
+    // const fileBuffer = Buffer.from(selectedFile, "base64");
 
-    // Write file buffer to a temporary file
-    const tempFilePath = "/tmp/" + Date.now() + "-tempfile";
-    fs.writeFileSync(tempFilePath, fileBuffer);
+    // // Write file buffer to a temporary file
+    // const tempFilePath = "/tmp/" + Date.now() + "-tempfile";
+    // fs.writeFileSync(tempFilePath, fileBuffer);
 
-    // Check file size
-    const stats = fs.statSync(tempFilePath);
-    const fileSizeInBytes = stats.size;
-    const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
-    fs.unlinkSync(tempFilePath); // Delete temporary file
+    // // Check file size
+    // const stats = fs.statSync(tempFilePath);
+    // const fileSizeInBytes = stats.size;
+    // const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+    // fs.unlinkSync(tempFilePath); // Delete temporary file
 
-    if (fileSizeInMB > 30) {
-      return res.status(400).json({ message: "File size exceeds 30MB." });
-    }
+    // if (fileSizeInMB > 30) {
+    //   return res.status(400).json({ message: "File size exceeds 30MB." });
+    // }
 
-    const fileExtension = selectedFile.split(";")[0].split("/")[1];
-    const mimeType = mimeTypes.lookup(fileExtension);
+    // const fileExtension = selectedFile.split(";")[0].split("/")[1];
+    // const mimeType = mimeTypes.lookup(fileExtension);
 
-    // Add allowed file types here
-    const allowedMimeTypes = ["image/jpeg", "image/png"];
+    // // Add allowed file types here
+    // const allowedMimeTypes = ["image/jpeg", "image/png"];
 
-    if (!mimeType || !allowedMimeTypes.includes(mimeType)) {
-      return res.status(400).json({ message: "Invalid file type." });
-    }
+    // if (!mimeType || !allowedMimeTypes.includes(mimeType)) {
+    //   return res.status(400).json({ message: "Invalid file type." });
+    // }
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const result = await User.create({
@@ -117,8 +169,6 @@ export const getUserInfo = async (req, res) => {
 export const updateProfile = async (req, res) => {
   const { id } = req.query;
   const { firstName, lastName, selectedFile } = req.body;
-
-  console.log(id, "update");
 
   const updatedProfile = await User.findByIdAndUpdate(
     id,

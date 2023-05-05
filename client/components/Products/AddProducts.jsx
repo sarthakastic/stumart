@@ -16,6 +16,7 @@ import { BiLocationPlus } from 'react-icons/Bi'
 import Error from '../Error'
 import Gpt from '../gpt'
 import * as api from '../../api/index'
+import registerIcon from '../../public/register.png'
 
 const AddProducts = (props) => {
   const dispatch = useDispatch()
@@ -148,7 +149,7 @@ const AddProducts = (props) => {
         <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-primary ">
           Please Sign In to view details.
         </h1>
-
+        <img className="h-1/2 md:h-3/4" src={registerIcon.src} />
         <Button
           content="Sign Up/Sign In"
           onClick={register}

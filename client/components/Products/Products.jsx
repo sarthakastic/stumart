@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchProducts } from '../../slices/productSlice'
 import { useRouter } from 'next/router'
 import Card from '../PredDefinedComponents/Card'
+import NoPosts from '../PredDefinedComponents/NoPosts'
 import { AiOutlineArrowRight } from 'react-icons/Ai'
 
 const Products = () => {
@@ -12,6 +13,7 @@ const Products = () => {
   const [postData, setPostData] = useState([])
 
   const data = useSelector((state) => state?.posts?.currentPage)
+  const post = useSelector((posts) => posts?.posts?.posts)
 
   const router = useRouter()
   const currentRoute = router.pathname
@@ -61,9 +63,12 @@ const Products = () => {
 
   return (
     <>
-      {currentRoute.includes('home') && (
+      {post.length <= 0 && currentRoute.includes('home') && (
+        <NoPosts heading="Oops! No Products" />
+      )}
+      {currentRoute.includes('home') && post.length > 0 && (
         <h1
-          className="font-bold w-full flex justify-start pl-14 text-4xl pt-20 text-white shadow-primary "
+          className="font-bold font-montserrat text-xl md:text-5xl w-full flex justify-start p-5 text-white  drop-shadow-[0_2.5px_2.5px_rgba(240,120,120,1)]"
           id="product"
         >
           All Products

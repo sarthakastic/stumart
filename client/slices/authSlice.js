@@ -30,6 +30,22 @@ export const signup = createAsyncThunk(
   }
 )
 
+export const validateUser = createAsyncThunk(
+  'validate',
+
+  async (formData, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.validateSighnUp(formData)
+      console.log(response, 'inside slice')
+      return response
+    } catch (error) {
+      console.log(error, 'inside catch')
+      dispatch(setError(error?.response?.data?.message))
+      rejectWithValue(error)
+    }
+  }
+)
+
 export const getUserInfo = createAsyncThunk(
   'userInfo',
   async (id, { dispatch, rejectWithValue }) => {

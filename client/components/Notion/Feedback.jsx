@@ -73,10 +73,12 @@ const Feedback = () => {
             />
           </div>
         ) : (
-          <Button
-            content="Sign Up/Sign In"
-            onClick={() => router.push('/register')}
-          />
+          <div className="m-1">
+            <Button
+              content="Sign Up/Sign In"
+              onClick={() => router.push('/register')}
+            />
+          </div>
         )}
       </form>
       {console.log(error?.error, 'cvhcvjhdciudscik')}

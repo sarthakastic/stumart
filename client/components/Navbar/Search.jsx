@@ -35,6 +35,7 @@ const Search = () => {
       <input
         type="text"
         name="search"
+        required
         placeholder="Search for Products"
         onChange={handleChange}
         className=" border-b-2 border-primary text-primary caret-primary focus:border-0 outline-primary "

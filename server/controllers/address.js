@@ -40,8 +40,6 @@ export const getAddress = async (req, res) => {
 export const updateAddress = async (req, res) => {
   const { _id } = req.query;
 
-  console.log(_id);
-
   const address = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(_id))

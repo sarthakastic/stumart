@@ -10,7 +10,10 @@ export const signin = (formData) => API.post('/users/signin', formData) //used f
 
 export const signup = (formData) => API.post('/users/signup', formData) //used for sign up
 
-export const getUserInfo = (id) => API.get(`/users/?id=${id}`)
+export const getUserInfo = (id) => API.get(`/users/?id=${id}`) // used to get user profile data
+
+export const validateSighnUp = (formData) =>
+  API.post('/users/validateSignUp', formData)
 
 export const editProfile = (id, formData) =>
   API.patch(`/users/?id=${id}`, formData) // used to update profile

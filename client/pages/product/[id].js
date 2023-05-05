@@ -95,7 +95,7 @@ const Product = () => {
         <h1 className="text-4xl flex justify-center items-center text-center my-4 font-bold text-primary ">
           Please Sign In to view details.
         </h1>
-
+        <img className="h-1/2 md:h-3/4" src={registerIcon.src} />
         <Button
           content="Sign Up/Sign In"
           onClick={register}

@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
-import { signin, signup, getUserInfo } from '../../slices/authSlice'
-import { closeError } from '../../slices/errorSlice'
+import {
+  signin,
+  signup,
+  getUserInfo,
+  validateUser,
+} from '../../slices/authSlice'
+import { closeError, setError } from '../../slices/errorSlice'
 import FileBase from 'react-file-base64'
 import * as api from '../../api'
 import Error from '../Error'
 import Button from '../PredDefinedComponents/Button'
+import { auth } from '../Firebase/firebase.config'
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 
 const UserInfo = (props) => {
   const [isSignUp, setIsSignUp] = useState(true)
@@ -34,8 +41,18 @@ const UserInfo = (props) => {
 
   const [user, setUser] = useState()
 
+  const [otp, setOtp] = useState(false)
+  const [otpValue, setOtpValue] = useState(NaN)
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const handleSignUp = () => {
+    console.log(formData, 'formdata')
+    dispatch(validateUser(formData)).then(
+      (res) => res?.payload?.status == 200 && handleOtp()
+    )
   }
 
   const onSubmit = async (e) => {
@@ -43,9 +60,10 @@ const UserInfo = (props) => {
 
     const storedData = JSON.parse(localStorage.getItem('profile'))
 
-    storedData.result.name = formData?.firstName + ' ' + formData?.lastName
-    storedData.result.selectedFile = formData?.selectedFile
-
+    if (storedData) {
+      storedData.result.name = formData?.firstName + ' ' + formData?.lastName
+      storedData.result.selectedFile = formData?.selectedFile
+    }
     const updateProfileLocalStorage = () => {
       localStorage.setItem('profile', JSON.stringify(storedData))
       router.reload()
@@ -56,13 +74,65 @@ const UserInfo = (props) => {
         .editProfile(user?.result?._id, formData)
         .then(updateProfileLocalStorage)
 
-    isSignUp &&
-      !props?.editUserInfo &&
-      (await dispatch(signup(formData)).then(!error && router.push('/')))
+    isSignUp && !props?.editUserInfo && (await handleSignUp())
 
     !isSignUp &&
       !props?.editUserInfo &&
       (await dispatch(signin(formData)).then(!error && router.push('/')))
+  }
+
+  const onCaptchaVerify = () => {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        'recaptcha-container',
+        {
+          size: 'invisible',
+          callback: () => {
+            onSignUp()
+          },
+          'expired-callback': () => {},
+        },
+        auth
+      )
+    }
+  }
+
+  const handleOtp = () => {
+    onSignUp()
+    setOtp(true)
+  }
+
+  const onSignUp = async () => {
+    onCaptchaVerify()
+
+    // setOtp(true)
+    const appVerifier = window.recaptchaVerifier
+
+    const ph = `+91${formData?.phoneNumber}`
+    await signInWithPhoneNumber(auth, ph, appVerifier)
+      .then((confirmationResult) => {
+        console.log('first')
+        // SMS sent. Prompt user to type the code from the message, then sign the
+        // user in with confirmationResult.confirm(code).
+        window.confirmationResult = confirmationResult
+        // ...
+      })
+      .catch((error) => {
+        console.log(error, 'otp error')
+        // Error; SMS not sent
+        // ...
+      })
+  }
+
+  const verifyOtp = () => {
+    window.confirmationResult
+      .confirm(otpValue)
+      .then(async (res) => {
+        await dispatch(signup(formData)).then(!error && router.push('/'))
+      })
+      .catch((err) => dispatch(setError(err?.message.slice(22, 47))))
+    setOtpValue(NaN)
+    setOtp(false)
   }
 
   useEffect(() => {
@@ -111,6 +181,7 @@ const UserInfo = (props) => {
             </h4>
           ))}
       </div>
+      <div id="recaptcha-container"></div>
       <div className="text-2xl w-full flex justify-center items-center text-center my-4 font-montserrat font-bold text-secondary ">
         {props?.edit && <h4>Edit your Profile!</h4>}
       </div>
@@ -215,13 +286,34 @@ const UserInfo = (props) => {
           </div>
         )}
         <p className="text-red-500">{error?.isError && error.error}</p>
-        <div className="border-2 border-secondary p-1 bg-transparent my-2">
-          <input
-            className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
-            type="submit"
-            value={props?.edit ? 'Edit' : isSignUp ? 'Sign Up' : 'Sign In'}
-          />
-        </div>
+        {otp ? (
+          <>
+            <input
+              className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
+              type="number"
+              placeholder="Enter OTP"
+              name="otp"
+              value={otpValue}
+              onChange={(e) => setOtpValue(e.target.value)}
+            />
+            <div className="border-2 border-secondary p-1 bg-transparent my-2">
+              <div
+                className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
+                onClick={verifyOtp}
+              >
+                Validate OTP
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="border-2 border-secondary p-1 bg-transparent my-2">
+            <input
+              className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
+              type="submit"
+              value={props?.edit ? 'Edit' : isSignUp ? 'Sign Up' : 'Sign In'}
+            />
+          </div>
+        )}
       </form>
       <div className="bg-white  p-4 flex flex-col   ">
         <div className="flex justify-center">
