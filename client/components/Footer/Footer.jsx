@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 import {
   AiFillLinkedin,
@@ -8,19 +9,30 @@ import {
 import { IoIosMail } from 'react-icons/Io'
 
 const Footer = () => {
+  const router = useRouter()
+
   return (
     <footer className="bg-primary w-screen h-fit mt-10 px-10 py-5 ">
       <div>
         <p className="text-white my-5 font-thin hover:cursor-pointer">
           About Project
         </p>
-        <p className="text-white my-5 font-thin hover:cursor-pointer">
+        <p
+          onClick={() => router.push('/termsAndConditions')}
+          className="text-white my-5 font-thin hover:cursor-pointer"
+        >
           Terms and Conditions
         </p>
-        <p className="text-white my-5 font-thin hover:cursor-pointer">
+        <p
+          onClick={() => router.push('/history')}
+          className="text-white my-5 font-thin hover:cursor-pointer"
+        >
           History
         </p>
-        <p className="text-white my-5 font-thin hover:cursor-pointer">
+        <p
+          onClick={() => router.push('#feedback')}
+          className="text-white my-5 font-thin hover:cursor-pointer"
+        >
           Give Feedback
         </p>
         <p className="text-white my-5 font-thin hover:cursor-pointer">

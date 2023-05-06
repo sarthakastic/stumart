@@ -51,7 +51,10 @@ const Feedback = () => {
   }
 
   return (
-    <div className="rounded-xl border-2 border-primary w-full h-full ">
+    <div
+      id="feedback"
+      className="rounded-xl border-2 border-primary w-full h-full "
+    >
       <h1 className="font-bold font-montserrat text-xl md:text-5xl w-full flex justify-start p-5 text-white  drop-shadow-[0_2.5px_2.5px_rgba(240,120,120,1)]">
         Add your suggestions or feedbacks...
       </h1>
