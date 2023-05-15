@@ -1,11 +1,18 @@
+// Native Imports
 import React from 'react'
+
+// Redux Imports
 import { useSelector } from 'react-redux'
+
+// Components Imports
 import Card from '../components/PredDefinedComponents/Card'
 import NoPosts from '../components/PredDefinedComponents/NoPosts'
 
+// set the searched results
 const search = () => {
   const post = useSelector((posts) => posts?.posts?.posts)
 
+  // if no posts
   if (post.length === 0) {
     return (
       <div className="py-20">

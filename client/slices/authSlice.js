@@ -1,7 +1,13 @@
+// Native Imports
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { setError } from './errorSlice'
+
+// API Imports
 import * as api from '../api/index'
 
+// Slice Imports
+import { setError } from './errorSlice'
+
+// used to sign in
 export const signin = createAsyncThunk(
   'signin',
   async (formData, { dispatch, rejectWithValue }) => {
@@ -16,6 +22,7 @@ export const signin = createAsyncThunk(
   }
 )
 
+// used to sign up
 export const signup = createAsyncThunk(
   'signup',
   async (formData, { dispatch, rejectWithValue }) => {
@@ -30,6 +37,7 @@ export const signup = createAsyncThunk(
   }
 )
 
+// used to validate user on sign up
 export const validateUser = createAsyncThunk(
   'validate',
 
@@ -46,6 +54,24 @@ export const validateUser = createAsyncThunk(
   }
 )
 
+// user to check user exists or not on edit password
+export const validateEditPassword = createAsyncThunk(
+  'validate',
+
+  async (formData, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.validateUser(formData)
+      console.log(response, 'inside slice')
+      return response
+    } catch (error) {
+      console.log(error, 'inside catch')
+      dispatch(setError(error?.response?.data?.message))
+      rejectWithValue(error)
+    }
+  }
+)
+
+// used to get user info
 export const getUserInfo = createAsyncThunk(
   'userInfo',
   async (id, { dispatch, rejectWithValue }) => {
@@ -60,15 +86,18 @@ export const getUserInfo = createAsyncThunk(
   }
 )
 
+// used to logout
 export const logout = createAsyncThunk('logout', async () => {
   localStorage.clear()
   // Other logout logic here
 })
 
+// initial state
 const initialState = {
   authData: null,
 }
 
+// satte updation
 export const authSlice = createSlice({
   name: 'auth',
   initialState: initialState,

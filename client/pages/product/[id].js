@@ -24,14 +24,15 @@ const Product = () => {
 
   const post = useSelector((posts) => posts?.posts?.posts)
 
-  const [search, setSearchData] = useState('')
+  const [search, setSearchData] = useState('') // set serach as empty string
 
-  const [category, setCategory] = useState('')
+  const [category, setCategory] = useState('') // used to set category
 
-  const [user, setUser] = useState()
+  const [user, setUser] = useState() // used to set local storage info
 
-  const [address, setAddress] = useState([])
+  const [address, setAddress] = useState([]) // used to set address we get from api
 
+  // initial state to save product details
   const [productData, setProductData] = useState({
     title: '',
     cost: NaN,
@@ -43,12 +44,22 @@ const Product = () => {
 
   const { id } = router.query
 
+  /* This `useEffect` hook is used to retrieve the user's profile information from the local storage and
+ set it to the `user` state variable. It runs only once when the component mounts, as the dependency
+ array is empty. If there is no profile information in the local storage, the `initialUser` variable
+ is set to `null`. Otherwise, it is set to the parsed profile information. Finally, the `setUser`
+ function is called to update the `user` state variable with the `initialUser` value. */
   useEffect(() => {
     const storedProfile = localStorage.getItem('profile')
     const initialUser = storedProfile ? JSON.parse(storedProfile) : null
     setUser(initialUser)
   }, [])
 
+  /* This `useEffect` hook is used to fetch the details of a product with the given `id` from the server
+ using the `getProduct` action creator from the `productSlice` slice. It runs whenever the `id`
+ value changes. If the `getProduct` request is successful, the `product` data is extracted from the
+ `response` object and set to the `productData` state variable using the `setProductData` function.
+ If the request fails, the error is logged to the console. */
   useEffect(() => {
     id &&
       dispatch(getProduct(id))
@@ -62,16 +73,35 @@ const Product = () => {
         })
   }, [id])
 
+  /* This `useEffect` hook is used to update the `category` state variable whenever the
+  `productData.category` value changes. It runs whenever the `productData.category` value changes,
+  as it is included in the dependency array. If the `productData.category` value is truthy, the
+  `setCategory` function is called to update the `category` state variable with the
+  `productData.category` value. Additionally, the current value of the `category` state variable is
+  logged to the console. */
   useEffect(() => {
     productData?.category && setCategory(productData?.category)
     console.log(category, 'category')
   }, [productData?.category])
 
+  /* This `useEffect` hook is used to dispatch the `searchProducts` action creator from the
+ `productSlice` slice whenever the `category` state variable changes. It runs whenever the
+ `category` value changes, as it is included in the dependency array. If the `category` value is
+ truthy, the `searchProducts` action creator is dispatched with an object containing the `search`
+ and `category` values as its payload. If the `category` value is falsy, the `searchProducts` action
+ creator is not dispatched. The purpose of this hook is to search for products with the same
+ category as the current product and display them as recommendations. */
   useEffect(() => {
-    console.log(category)
     category !== '' && dispatch(searchProducts({ search, category }))
   }, [category])
 
+  /* This `useEffect` hook is used to fetch the address of the creator of the current product from the
+ server using the `getAddress` action creator from the `addressSlice` slice. It runs whenever the
+ `productData` state variable changes. If the `productData.creator` value is truthy, the
+ `getAddress` action creator is dispatched with the `productData.creator` value as its payload. If
+ the request is successful, the `address` data is extracted from the `response` object and set to
+ the `address` state variable using the `setAddress` function. If the request fails, the error is
+ logged to the console. */
   useEffect(() => {
     productData?.creator !== '' &&
       dispatch(getAddress(productData?.creator))
@@ -85,10 +115,14 @@ const Product = () => {
         })
   }, [productData])
 
+  /**
+   * The function redirects the user to the registration page using the router.
+   */
   const register = () => {
     router.push('/register')
   }
 
+  // if user is not signed in
   if (!user?.result?.name) {
     return (
       <div className="h-screen bg-white flex flex-col justify-center items-center">
@@ -109,6 +143,7 @@ const Product = () => {
     <div className="flex flex-col justify-center items-center bg-white w-screen h-full  min-h-screen md:min-h-screen py-20 px-2 md:p-20">
       <div className=" w-full  m-5  flex flex-col md:flex-row  p-2  ">
         <div className="w-full md:w-1/2 bg-secondary p-5 h-[720px]">
+          {/* Product Image div */}
           <div className="bg-transparent border-2 border-ternary h-full p-5 flex items-center justify-center">
             <img
               className="h-[600px] w-full "
@@ -117,8 +152,8 @@ const Product = () => {
             />
           </div>
         </div>
-
-        <div className="flex flex-col w-full max-h-[720px] md:w-1/2  bg-ternary  p-5">
+        {/* Product Details div */}
+        <div className="flex flex-col w-full max-h-[720px] md:w-1/2  bg-white border-secondary border-2 md:ml-1 p-5">
           <div className="border-2 border-secondary h-full p-5 font-montserrat text-primary ">
             <p className="px-2 ">
               {' '}
@@ -184,6 +219,7 @@ const Product = () => {
           </div>
         </div>
       </div>
+      {/* Recommended Products */}
       <h1 className="font-bold font-montserrat text-xl md:text-5xl w-full flex justify-start p-5 text-white  drop-shadow-[0_2.5px_2.5px_rgba(240,120,120,1)]">
         Recommended products
       </h1>

@@ -1,6 +1,9 @@
+// Native Imports
 import React from 'react'
-import add from '../../public/add.svg'
 import { useRouter } from 'next/router'
+
+// Image Imports
+import add from '../../public/add.svg'
 
 const Product = () => {
   const router = useRouter()

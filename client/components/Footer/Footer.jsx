@@ -1,12 +1,14 @@
+// Native Imports
 import { useRouter } from 'next/router'
 import React from 'react'
+
+// Icons Imports
 import {
   AiFillLinkedin,
   AiFillTwitterCircle,
   AiFillGithub,
   AiOutlineMail,
 } from 'react-icons/Ai'
-import { IoIosMail } from 'react-icons/Io'
 
 const Footer = () => {
   const router = useRouter()
@@ -14,28 +16,28 @@ const Footer = () => {
   return (
     <footer className="bg-primary w-screen h-fit mt-10 px-10 py-5 ">
       <div>
-        <p className="text-white my-5 font-thin hover:cursor-pointer">
+        <p className="text-white my-5 font-thin hover:cursor-pointer hover:underline ">
           About Project
         </p>
         <p
           onClick={() => router.push('/termsAndConditions')}
-          className="text-white my-5 font-thin hover:cursor-pointer"
+          className="text-white my-5 font-thin hover:cursor-pointer hover:underline "
         >
           Terms and Conditions
         </p>
         <p
           onClick={() => router.push('/history')}
-          className="text-white my-5 font-thin hover:cursor-pointer"
+          className="text-white my-5 font-thin hover:cursor-pointer hover:underline "
         >
           History
         </p>
         <p
           onClick={() => router.push('#feedback')}
-          className="text-white my-5 font-thin hover:cursor-pointer"
+          className="text-white my-5 font-thin hover:cursor-pointer hover:underline "
         >
           Give Feedback
         </p>
-        <p className="text-white my-5 font-thin hover:cursor-pointer">
+        <p className="text-white my-5 font-thin hover:cursor-default">
           Connect with Developer
         </p>
         <div className="flex items-center justify-start font-bold text-white text-4xl gap-2 ">

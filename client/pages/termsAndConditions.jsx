@@ -1,8 +1,10 @@
+// Native Imports
 import React from 'react'
 
 const Terms = () => {
   return (
     <div className="m-20">
+      {/* Termsd and Conditions */}
       <h1 className="font-bold font-montserrat text-xl md:text-5xl w-full flex justify-start p-5 text-white  drop-shadow-[0_2.5px_2.5px_rgba(240,120,120,1)]">
         Terms and Conditions
       </h1>
@@ -62,6 +64,7 @@ const Terms = () => {
         By using our website, you acknowledge that you have read and understood
         these terms and conditions and agree to abide by them.
       </p>
+      {/* Privacy Policy */}
       <h1 className="font-bold font-montserrat text-xl md:text-5xl w-full flex justify-start p-5 text-white  drop-shadow-[0_2.5px_2.5px_rgba(240,120,120,1)]">
         Privacy Policy
       </h1>

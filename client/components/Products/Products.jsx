@@ -1,10 +1,14 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchProducts } from '../../slices/productSlice'
 import { useRouter } from 'next/router'
+
+import { useDispatch, useSelector } from 'react-redux'
+
+import { fetchProducts } from '../../slices/productSlice'
+
 import Card from '../PredDefinedComponents/Card'
 import NoPosts from '../PredDefinedComponents/NoPosts'
+
 import { AiOutlineArrowRight } from 'react-icons/Ai'
 
 const Products = () => {
@@ -63,7 +67,7 @@ const Products = () => {
 
   return (
     <>
-      {post.length <= 0 && currentRoute.includes('home') && (
+      {post.length <= 0 && currentRoute.includes('') && (
         <NoPosts heading="Oops! No Products" />
       )}
       {currentRoute.includes('home') && post.length > 0 && (

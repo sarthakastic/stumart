@@ -1,12 +1,24 @@
+// Native Imports
 import React from 'react'
+
+// Redux Imports
 import { useDispatch } from 'react-redux'
+
+// Components Imports
 import Button from './PredDefinedComponents/Button'
+
+// Slice Imports
 import { closeError } from '../slices/errorSlice'
+
+// Image Imports
 import error from '../public/error.png'
 
 const Error = (props) => {
   const dispatch = useDispatch()
 
+  /**
+   * This function calls the `closeError()` function when an error occurs and close the error dialog box.
+   */
   const handleError = () => {
     dispatch(closeError())
   }

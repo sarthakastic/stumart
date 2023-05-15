@@ -22,6 +22,9 @@ const Search = () => {
     setSearchData(e.target.value)
   }
 
+  /**
+   * This function handles form submission for searching products and redirects to the search page.
+   */
   const handleSubmit = (e) => {
     e.preventDefault()
     search &&

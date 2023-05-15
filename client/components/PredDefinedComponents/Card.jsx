@@ -1,27 +1,41 @@
+// Native Imports
 import React, { useState, useEffect } from 'react'
-import Button from './Button'
-import { getAddress } from '../../slices/addressSlice'
-import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
-import Product from '../../pages/product'
+
+// Slice Imports
+import { getAddress } from '../../slices/addressSlice'
+
+// Redux Imports
+import { useDispatch } from 'react-redux'
+
+// Icons IMports
 import { AiFillEdit } from 'react-icons/Ai'
 import { ImCross } from 'react-icons/Im'
 import { MdDelete } from 'react-icons/Md'
+
+// API Imports
 import * as api from '../../api/index'
+
+// Components Imports
 import AddProducts from '../Products/AddProducts'
 
 const Card = (props) => {
   const dispatch = useDispatch()
+
   const router = useRouter()
 
   const id = router?.query?.id
 
-  const [address, setAddress] = useState([])
-  const [user, setUser] = useState()
+  const [address, setAddress] = useState([]) // used to set address
+
+  const [user, setUser] = useState() // used to set user details from local storage
+
   const [productId, setProductId] = useState('')
+
   const [edit, setEdit] = useState(false)
 
   const creator = props.creator
+
   const currentRoute = router.pathname
 
   useEffect(() => {
@@ -39,21 +53,38 @@ const Card = (props) => {
     }
   }, [props.creator])
 
+  /* This `useEffect` hook is used to retrieve the user details from the local storage and set it to the
+ `user` state variable. It runs only once when the component mounts, as the dependency array is
+ empty. The `localStorage.getItem('profile')` method retrieves the value of the 'profile' key from
+ the local storage, which is then parsed using `JSON.parse()` method to convert it into a JavaScript
+ object. If the 'profile' key is not present in the local storage, the `initialUser` variable is set
+ to `null`. Finally, the `setUser(initialUser)` method is used to set the `initialUser` value to the
+ `user` state variable. */
   useEffect(() => {
     const storedProfile = localStorage.getItem('profile')
     const initialUser = storedProfile ? JSON.parse(storedProfile) : null
     setUser(initialUser)
   }, [])
 
+  /**
+   * This function sets the product ID and toggles the edit state.
+   */
   const handleEdit = (id) => {
     setProductId(id)
     setEdit((edit) => !edit)
   }
 
+  /**
+   * This function deletes a product with a given ID using an API call and redirects the user to the
+   * homepage.
+   */
   const deleteProduct = (id) => {
     api.deleteProduct(id).then(router.push('/'))
   }
 
+  /**
+   * This function redirects the user to a specific product page based on the product ID.
+   */
   const productDetails = () => {
     router.push(`/product/${props?.id}`)
   }
@@ -101,7 +132,7 @@ const Card = (props) => {
               </div>
             ) : (
               <p
-                className="py-1 text-primary hover:underline decoration-primary hover:cursor-pointer px-4 "
+                className="py-1 text-primary hover:underline text-base decoration-primary hover:cursor-pointer px-4 "
                 onClick={productDetails}
               >
                 View more details

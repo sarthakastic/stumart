@@ -1,7 +1,13 @@
+// Native Imports
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { setError } from './errorSlice'
+
+// API Imports
 import * as api from '../api/index'
 
+// Slice Imports
+import { setError } from './errorSlice'
+
+// used to fetch all products
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts', // Unique string identifier for the thunk action
   async ({ limit, page }, { rejectWithValue }) => {
@@ -16,6 +22,7 @@ export const fetchProducts = createAsyncThunk(
   }
 )
 
+// used to create products
 export const createProducts = createAsyncThunk(
   'createProduct',
   async (formData, { dispatch, rejectWithValue }) => {
@@ -29,6 +36,7 @@ export const createProducts = createAsyncThunk(
   }
 )
 
+// used to update page number in pagination
 export const pagination = createAsyncThunk(
   'pagination',
   async (formData, { rejectWithValue }) => {
@@ -41,6 +49,7 @@ export const pagination = createAsyncThunk(
   }
 )
 
+// used to search products
 export const searchProducts = createAsyncThunk(
   'search',
   async (searchQuery, { rejectWithValue }) => {
@@ -54,6 +63,7 @@ export const searchProducts = createAsyncThunk(
   }
 )
 
+// used to get info of a particular product
 export const getProduct = createAsyncThunk(
   'fetchProduct',
   async (id, { rejectWithValue }) => {
@@ -68,6 +78,7 @@ export const getProduct = createAsyncThunk(
   }
 )
 
+// used to get products of a particular user
 export const getUserProduct = createAsyncThunk(
   'fetchUserProduct',
   async (creator, { rejectWithValue }) => {
@@ -84,6 +95,7 @@ export const getUserProduct = createAsyncThunk(
   }
 )
 
+// used to update product info
 export const updateProduct = createAsyncThunk(
   'updateProduct',
   async (id, formData, { rejectWithValue }) => {
@@ -99,8 +111,10 @@ export const updateProduct = createAsyncThunk(
   }
 )
 
+// initialise state
 const initialState = { posts: [], numberOfPages: null, currentPage: 1 }
 
+// state updation
 const postsSlice = createSlice({
   name: 'posts',
   initialState: initialState,

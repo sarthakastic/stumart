@@ -35,6 +35,18 @@ export const signin = async (req, res) => {
   }
 };
 
+export const validateUser = async (req, res) => {
+  const data = req;
+  console.log(data, "data");
+
+  const { phoneNumber } = req.body;
+
+  const existingUser = await User.findOne({ phoneNumber });
+  if (!existingUser) {
+    return res.status(404).json({ message: "User doesn't exist." });
+  }
+};
+
 export const validateSignUp = async (req, res) => {
   const data = req;
   console.log(data, "data");
@@ -181,4 +193,21 @@ export const updateProfile = async (req, res) => {
     }
   );
   res.json(updatedProfile);
+};
+
+export const updatePassword = async (req, res) => {
+  const { phoneNumber } = req.query;
+  const { password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+  const updatedPassword = await User.findOneAndUpdate(
+    phoneNumber,
+    {
+      password: hashedPassword,
+    },
+    {
+      new: true,
+    }
+  );
+  res.json(updatedPassword);
 };

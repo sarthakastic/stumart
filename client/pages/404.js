@@ -1,16 +1,28 @@
+// Native Imports
 import React from 'react'
-import lostIcon from '../public/lost.svg'
-import { HiHome } from 'react-icons/Hi'
+
+// Components Imports
 import Button from '../components/PredDefinedComponents/Button'
 
+// Icons Imports
+import { HiHome } from 'react-icons/Hi'
+
+// Images Imports
+import lostIcon from '../public/lost.svg'
+
+// Redux Imports
 import { useRouter } from 'next/router'
 
 const lost = () => {
   const router = useRouter()
 
+  /**
+   * The above function redirects the user to the landing page using the router.
+   */
   const home = () => {
     router.push('/')
   }
+
   return (
     <div className="h-screen bg-white flex flex-col justify-center items-center">
       <img

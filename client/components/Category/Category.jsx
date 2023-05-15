@@ -1,24 +1,40 @@
+// Native Imports
 import React from 'react'
-import { category } from '../../utils/categoryData'
-import { searchProducts } from '../../slices/productSlice'
-import { useDispatch } from 'react-redux'
-import { useState } from 'react'
 import { useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { FaMotorcycle } from 'react-icons/Fa'
+
+// Utils Imports
+import { category } from '../../utils/categoryData'
+
+// Slice Imports
+import { searchProducts } from '../../slices/productSlice'
+
+// Redux Imports
+import { useDispatch } from 'react-redux'
 
 const Category = () => {
   const dispatch = useDispatch()
+
   const router = useRouter()
+
   const [searchQuery, setSearchQuery] = useState({
     search: '',
     category: '',
   })
 
+  /**
+   * The handleClick function navigates to a specific category page using React Router.
+   */
   const handleClick = (tag) => {
     router.push(`/category/${tag}`)
   }
 
+  /* `useEffect` is a React Hook that allows you to perform side effects in functional components. In
+ this case, the `useEffect` hook is used to dispatch a Redux action `searchProducts` whenever the
+ `searchQuery` state changes. This means that whenever the user types in a search query or selects a
+ category, the `searchProducts` action will be dispatched with the updated `searchQuery` object as
+ its argument. This will trigger a search for products based on the user's input. */
   useEffect(() => {
     dispatch(searchProducts(searchQuery))
   }, [searchQuery])

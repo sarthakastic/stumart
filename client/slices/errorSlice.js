@@ -1,17 +1,22 @@
+// Native Imports
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
+// used to set Error
 export const setError = createAsyncThunk('setError', async (res) => {
   console.log(res, 'errorslice')
   return res
 })
 
+// used to close error
 export const closeError = createAsyncThunk('closeError', async (res) => {
   const data = false
   return data
 })
 
+// state initialisation
 const initialState = { isError: false, error: '' }
 
+// state updation
 export const errorSlice = createSlice({
   name: 'error',
   initialState: initialState,

@@ -1,4 +1,7 @@
+// Native Imports
 import React from 'react'
+
+// Image Imports
 import git from '../../public/git.svg'
 
 const Github = () => {

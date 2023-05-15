@@ -1,24 +1,40 @@
-import { Router } from 'next/router'
+// Native Imports
+import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
+
+// Redux Imports
 import { useDispatch, useSelector } from 'react-redux'
-import * as api from '../../api'
+
+// Slice Imports
 import { closeError } from '../../slices/errorSlice'
 import { addFeedback } from '../../slices/feedbackSlice'
+
+// Components Imports
 import Button from '../PredDefinedComponents/Button'
-import { useRouter } from 'next/router'
 
 const Feedback = () => {
   const dispatch = useDispatch()
-  const error = useSelector((state) => state?.error)
+
+  const error = useSelector((state) => state?.error) // get the error from redux store
+
   const router = useRouter()
 
-  const [user, setUser] = useState()
+  const [user, setUser] = useState() // set the user data from local storage
+
+  // initialise formData value to be filled in feedback api
   const [formData, setFormData] = useState({
     feedback: '',
     contact: NaN,
     creator: '',
   })
 
+  /* This code is using the `useEffect` hook to retrieve the user data from local storage and set it to
+ the `user` state variable. It runs only once when the component mounts, as the dependency array
+ `[]` is empty. The `localStorage.getItem('profile')` method retrieves the value of the 'profile'
+ key from the local storage, and the `JSON.parse(storedProfile)` method parses the retrieved value
+ from a string to a JavaScript object. If there is no value for the 'profile' key in the local
+ storage, the `initialUser` variable is set to `null`. Finally, the `setUser(initialUser)` method
+ sets the `user` state variable to the retrieved user data or `null`. */
   useEffect(() => {
     const storedProfile = localStorage.getItem('profile')
     const initialUser = storedProfile ? JSON.parse(storedProfile) : null
@@ -29,15 +45,22 @@ const Feedback = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
+  /**
+   * The "clear" function sets the state of "formData" to empty values.
+   */
   const clear = () => {
     setFormData({ feedback: '', contact: NaN, creator: '' })
   }
 
+  /**
+   * The function handleClose dispatches a closeError action and clears some data.
+   */
   const handleClose = () => {
     dispatch(closeError())
     clear()
   }
 
+  // Feedback is submitted using addFeedback slice
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -76,7 +99,10 @@ const Feedback = () => {
             />
           </div>
         ) : (
-          <div className="m-1">
+          <div className="m-1 flex flex-col md:flex-row items-center text-xs justify-between ">
+            <p className="text-secondary p-1 ">
+              Please Sign Up/ Sign In to add your Feedback
+            </p>
             <Button
               content="Sign Up/Sign In"
               onClick={() => router.push('/register')}
@@ -85,7 +111,7 @@ const Feedback = () => {
         )}
       </form>
       {console.log(error?.error, 'cvhcvjhdciudscik')}
-      {error?.isError && error?.error === '' && (
+      {error?.isError && (
         <div className="fixed inset-0 z-10  bg-black bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center ">
           <div className="w-3/4 h-1/2 bg-white flex flex-col rounded-xl items-center justify-center ">
             <p className="font-montserrat font-bold text-primary">

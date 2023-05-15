@@ -1,6 +1,4 @@
-import Head from 'next/head'
-
-import Landing from '../components/Landing'
+// Components Imports
 import Products from '../components/Products/Products'
 import Pagination from '../components/Pagination/Pagination'
 

@@ -1,14 +1,22 @@
-import React, { useEffect, useState } from 'react'
+// Native Imports
+import React, { useState } from 'react'
+
+// Redux Imports
 import { useSelector, useDispatch } from 'react-redux'
+
+//Slice Imports
 import { pagination } from '../../slices/productSlice'
 
 const Pagination = () => {
-  const numberOfPages = useSelector((state) => state?.posts?.numberOfPages)
-  const [pageNo, setPageNo] = useState(1)
+  const numberOfPages = useSelector((state) => state?.posts?.numberOfPages) // set total number of pages
+
+  const [pageNo, setPageNo] = useState(1) // set the active page number
 
   const dispatch = useDispatch()
 
-  let pages = []
+  let pages = [] // list of page numbers
+
+  // add the page numbers inside the list
   for (let i = 1; i <= numberOfPages; i++) {
     pages.push({
       key: i,
@@ -16,8 +24,13 @@ const Pagination = () => {
     })
   }
 
-  pages.map((data) => console.log(data, 'map'))
-
+  /**
+   * This is a JavaScript function that increments the pagination data and sets the page number.
+   * @param data - The parameter `data` is being passed to the `inc` function. It is then being used as
+   * an argument for the `pagination` function that is being dispatched. The `pagination` function is
+   * likely updating some state in the application. Once the dispatch is complete, the
+   * `console.log('first
+   */
   const inc = (data) =>
     dispatch(pagination(data)).then(console.log('first')).then(setPageNo(data))
 

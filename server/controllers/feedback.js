@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Feedback from "../models/feedback.js";
 
+// function to add feedback
 export const addFeedback = async (req, res) => {
   const feedback = req.body;
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API = axios.create({
-  baseURL: 'http://localhost:8001/',
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_LINK,
 })
 
 // AUTH API's
@@ -13,10 +13,16 @@ export const signup = (formData) => API.post('/users/signup', formData) //used f
 export const getUserInfo = (id) => API.get(`/users/?id=${id}`) // used to get user profile data
 
 export const validateSighnUp = (formData) =>
-  API.post('/users/validateSignUp', formData)
+  API.post('/users/validateSignUp', formData) // used to validate user data on signup
+
+export const validateUser = (formData) =>
+  API.post('/users/validateUser', formData) // used to check whether user is existing or not
 
 export const editProfile = (id, formData) =>
   API.patch(`/users/?id=${id}`, formData) // used to update profile
+
+export const updatePassword = (phoneNumber, formData) =>
+  API.patch(`/users/updatePassword?phoneNumber=${phoneNumber}`, formData) // used to update password
 
 // ADDRESS API's
 

@@ -1,8 +1,10 @@
+// Native Imports
 import React from 'react'
+import { useRouter } from 'next/router'
+
+// Components Imports
 import Navigation from './Navigation'
 import Search from './Search'
-import { useRouter } from 'next/router'
-import logo from '../../public/logo.png'
 
 const Navbar = () => {
   const router = useRouter()

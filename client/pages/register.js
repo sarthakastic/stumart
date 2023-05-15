@@ -1,29 +1,28 @@
+// Native Imports
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+
+// Redux Imports
 import { useRouter } from 'next/router'
-import { signin, signup } from '../slices/authSlice'
-import FileBase from 'react-file-base64'
-import Button from '../components/PredDefinedComponents/Button'
-import registerIcon from '../public/register.png'
+
+// Components Imports
 import UserInfo from '../components/UserInfo/UserInfo'
 
+// Images Imports
+import registerIcon from '../public/register.png'
+
 const register = () => {
-  const [isSignUp, setIsSignUp] = useState(false)
-
-  const toggleAuth = () => {
-    setIsSignUp((prevAuth) => !prevAuth)
-  }
-
   const router = useRouter()
 
-  const [user, setUser] = useState()
+  const [user, setUser] = useState() // used to store local storage data
 
+  // store local storage data
   useEffect(() => {
     const storedProfile = localStorage.getItem('profile')
     const initialUser = storedProfile ? JSON.parse(storedProfile) : null
     setUser(initialUser)
   }, [])
 
+  // if user is already log in then redirect to home page
   if (user?.result?.name) {
     router.push('/')
   }

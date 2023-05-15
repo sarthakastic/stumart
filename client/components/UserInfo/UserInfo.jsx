@@ -6,14 +6,15 @@ import {
   signup,
   getUserInfo,
   validateUser,
+  validateEditPassword,
 } from '../../slices/authSlice'
-import { closeError, setError } from '../../slices/errorSlice'
+import { setError } from '../../slices/errorSlice'
 import FileBase from 'react-file-base64'
 import * as api from '../../api'
 import Error from '../Error'
-import Button from '../PredDefinedComponents/Button'
 import { auth } from '../Firebase/firebase.config'
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/Bs'
 
 const UserInfo = (props) => {
   const [isSignUp, setIsSignUp] = useState(true)
@@ -44,6 +45,9 @@ const UserInfo = (props) => {
   const [otp, setOtp] = useState(false)
   const [otpValue, setOtpValue] = useState(NaN)
   const [forgotPassword, setForgotPassword] = useState(false)
+  const [editPassword, setEditPassword] = useState(false)
+  const [resendOtp, setResendOtp] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -82,7 +86,10 @@ const UserInfo = (props) => {
       (await dispatch(signin(formData)).then(!error && router.push('/')))
   }
 
-  const onCaptchaVerify = () => {
+  const onCaptchaVerify = (e) => {
+    if (e) {
+      e.preventDefault()
+    }
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
         'recaptcha-container',
@@ -103,7 +110,21 @@ const UserInfo = (props) => {
     setOtp(true)
   }
 
-  const onSignUp = async () => {
+  const handleEditOtp = (e) => {
+    if (e) {
+      e.preventDefault()
+    }
+    dispatch(validateEditPassword(formData)).then(
+      (res) => res?.payload?.status == 200 && onSignUp()
+    )
+
+    setResendOtp(true)
+  }
+
+  const onSignUp = async (e) => {
+    if (e) {
+      e.preventDefault()
+    }
     onCaptchaVerify()
 
     // setOtp(true)
@@ -125,15 +146,30 @@ const UserInfo = (props) => {
       })
   }
 
-  const verifyOtp = () => {
+  const verifyOtp = (e) => {
+    if (e) {
+      e.preventDefault()
+    }
     window.confirmationResult
       .confirm(otpValue)
       .then(async (res) => {
-        await dispatch(signup(formData)).then(!error && router.push('/'))
+        ;(await forgotPassword)
+          ? setEditPassword(true)
+          : dispatch(signup(formData)).then(!error && router.push('/'))
       })
       .catch((err) => dispatch(setError(err?.message.slice(22, 47))))
     setOtpValue(NaN)
     setOtp(false)
+  }
+
+  const updatePassword = (e) => {
+    if (e) {
+      e.preventDefault()
+    }
+
+    api
+      .updatePassword(formData?.phoneNumber, { password: formData?.password })
+      .then(router.push('/'))
   }
 
   useEffect(() => {
@@ -191,44 +227,88 @@ const UserInfo = (props) => {
       <div id="recaptcha-container"></div>
       {forgotPassword ? (
         <>
-          <form
-            onSubmit={onSignUp}
-            className="flex flex-col w-full items-start bg-white  "
-          >
-            <input
-              className=" outline-transparent w-3/4 border-b-2 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
-              name="phoneNumber"
-              onChange={handleChange}
-              required
-              min={5555555555}
-              max={9999999999}
-              placeholder="Phone Number"
-              type="number"
-            />
-            <div className="border-2 border-secondary p-1 bg-transparent my-2">
+          {editPassword ? (
+            <>
+              <form
+                className="flex flex-col w-full items-start bg-white"
+                onSubmit={updatePassword}
+              >
+                <input
+                  className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  required
+                  onChange={handleChange}
+                  placeholder="New Password"
+                />
+                <p onClick={() => setShowPassword((prev) => !prev)}>
+                  {' '}
+                  {showPassword ? (
+                    <BsFillEyeSlashFill className="text-secondary hover:cursor-pointer text-2xl " />
+                  ) : (
+                    <BsFillEyeFill className="text-secondary hover:cursor-pointer  text-2xl " />
+                  )}
+                </p>
+                <div className="border-2 border-secondary p-1 bg-transparent my-2">
+                  <input
+                    className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
+                    type="submit"
+                    value={'Edit'}
+                  />
+                </div>
+              </form>
+            </>
+          ) : (
+            <>
+              <form
+                onSubmit={handleEditOtp}
+                className="flex flex-col w-full items-start bg-white  "
+              >
+                <input
+                  className=" outline-transparent w-3/4 border-b-2 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
+                  name="phoneNumber"
+                  onChange={handleChange}
+                  required
+                  min={5555555555}
+                  max={9999999999}
+                  placeholder="Phone Number"
+                  type="number"
+                />
+                {resendOtp ? (
+                  <p
+                    onClick={onSignUp}
+                    className="text-secondary pl-5 hover:underline decoration-secondary hover:cursor-pointer "
+                  >
+                    resend OTP
+                  </p>
+                ) : (
+                  <div className="border-2 border-secondary p-1 bg-transparent my-2">
+                    <input
+                      className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
+                      type="submit"
+                      value={'Send OTP'}
+                    />
+                  </div>
+                )}
+              </form>
               <input
-                className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
-                type="submit"
-                value={'Send OTP'}
+                className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
+                type="number"
+                placeholder="Enter OTP"
+                name="otp"
+                value={otpValue}
+                onChange={(e) => setOtpValue(e.target.value)}
               />
-            </div>
-          </form>
-          <input
-            className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
-            type="number"
-            placeholder="Enter OTP"
-            name="otp"
-            value={otpValue}
-            onChange={(e) => setOtpValue(e.target.value)}
-          />
-          <div className="border-2 border-secondary p-1 bg-transparent my-2">
-            <div
-              className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
-              onClick={verifyOtp}
-            >
-              Validate OTP
-            </div>
-          </div>
+              <div className="border-2 border-secondary p-1 bg-transparent my-2">
+                <div
+                  className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
+                  onClick={verifyOtp}
+                >
+                  Validate OTP
+                </div>
+              </div>
+            </>
+          )}
         </>
       ) : (
         <>
@@ -277,14 +357,24 @@ const UserInfo = (props) => {
               />
             )}
             {!props?.editUserInfo && (
-              <input
-                className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
-                type="password"
-                name="password"
-                required
-                onChange={handleChange}
-                placeholder="Password"
-              />
+              <div className="flex items-center ">
+                <input
+                  className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  required
+                  onChange={handleChange}
+                  placeholder="Password"
+                />
+                <p onClick={() => setShowPassword((prev) => !prev)}>
+                  {' '}
+                  {showPassword ? (
+                    <BsFillEyeSlashFill className="text-secondary hover:cursor-pointer text-2xl " />
+                  ) : (
+                    <BsFillEyeFill className="text-secondary hover:cursor-pointer  text-2xl " />
+                  )}
+                </p>
+              </div>
             )}
 
             {isSignUp && (
@@ -293,7 +383,7 @@ const UserInfo = (props) => {
                   <input
                     className=" outline-transparent border-b-2 w-3/4 my-2 placeholder-secondary border-secondary text-secondary caret-secondary  "
                     required
-                    type="text"
+                    type={showPassword ? 'text' : 'password'}
                     name="confirmPassword"
                     onChange={handleChange}
                     placeholder="Confirm Password"
@@ -337,7 +427,7 @@ const UserInfo = (props) => {
                   <input className=" my-2  " type="checkbox" required />
                   &nbsp; I agree to &nbsp;
                   <a
-                    className="hover:cursor-pointer hover:underline "
+                    className="hover:cursor-pointer underline "
                     href="/termsAndConditions"
                   >
                     Terms and Conditions
@@ -356,13 +446,21 @@ const UserInfo = (props) => {
                   value={otpValue}
                   onChange={(e) => setOtpValue(e.target.value)}
                 />
-                <div className="border-2 border-secondary p-1 bg-transparent my-2">
-                  <div
-                    className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
-                    onClick={verifyOtp}
-                  >
-                    Validate OTP
+                <div className="flex items-center  ">
+                  <div className="border-2 border-secondary p-1 bg-transparent my-2">
+                    <div
+                      className=" h-fit w-fit bg-secondary  py-1 px-4 md:mx-1  hover:cursor-pointer text-white "
+                      onClick={verifyOtp}
+                    >
+                      Validate OTP
+                    </div>
                   </div>
+                  <p
+                    onClick={onSignUp}
+                    className="text-secondary pl-5 hover:underline decoration-secondary hover:cursor-pointer "
+                  >
+                    resend OTP
+                  </p>
                 </div>
               </>
             ) : (

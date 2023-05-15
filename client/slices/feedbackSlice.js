@@ -1,7 +1,13 @@
+// Native Imports
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+
+// API Imports
 import * as api from '../api/index'
+
+// Slice Imports
 import { setError } from './errorSlice'
 
+// used to add feedback
 export const addFeedback = createAsyncThunk(
   'addFeedback',
   async (formData, { dispatch, rejectWithValue }) => {
@@ -17,8 +23,10 @@ export const addFeedback = createAsyncThunk(
   }
 )
 
+// initialise state
 const initialState = { feedback: [] }
 
+// state updation
 const feedbackSlice = createSlice({
   name: 'feedback',
   initialState: initialState,

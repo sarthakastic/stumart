@@ -1,14 +1,24 @@
+// Native Imports
 import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { addAddress, getAddress } from '../../slices/addressSlice'
-import addressIcon from '../../public/address.svg'
 
+// Redux Imports
+import { useDispatch } from 'react-redux'
+
+// Slice Imports
+import { addAddress, getAddress } from '../../slices/addressSlice'
+
+// Components Imports
 import Button from '../PredDefinedComponents/Button'
-import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from 'react-icons/Io'
+
+// Icons Imports
 import { FiLogIn } from 'react-icons/Fi'
+import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from 'react-icons/Io'
+
+// API Imports
 import { updateAddress } from '../../api'
 
+//Image Imports
 import registerIcon from '../../public/register.png'
 
 const AddAddress = (props) => {

@@ -1,8 +1,8 @@
+// Native Imports
 import React from 'react'
-import Navbar from './Navbar/Navbar'
+
+// Components Imports
 import Products from './Products/Products'
-import { useDispatch, useSelector } from 'react-redux'
-import { pagination } from '../slices/productSlice'
 import Pagination from './Pagination/Pagination'
 import Carousel from './Carousel/Carousel'
 
