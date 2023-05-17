@@ -11,6 +11,7 @@ import { searchProducts } from '../../slices/productSlice'
 // Components Imports
 import Button from '../../components/PredDefinedComponents/Button'
 import Card from '../../components/PredDefinedComponents/Card'
+import Loader from '../../components/PredDefinedComponents/Loader'
 
 // Icons Imports
 import { FiLogIn } from 'react-icons/Fi'
@@ -23,6 +24,11 @@ const Product = () => {
   const dispatch = useDispatch()
 
   const post = useSelector((posts) => posts?.posts?.posts)
+
+  const load = useSelector((state) => state?.load?.isLoad)
+  console.log(load, 'k')
+
+  const error = useSelector((state) => state?.error?.isError)
 
   const [search, setSearchData] = useState('') // set serach as empty string
 
@@ -247,6 +253,7 @@ const Product = () => {
             ))}
         </div>
       )}
+      {load && <Loader />}
     </div>
   )
 }

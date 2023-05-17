@@ -33,7 +33,6 @@ export const errorSlice = createSlice({
       })
       .addCase(setError.fulfilled, (state, action) => {
         state.error = action.payload
-        console.log(state?.error, 'bcvhjcjhbjkckdckjdfullfilled')
         state.isError = true
       })
       .addCase(setError.rejected, (state) => {

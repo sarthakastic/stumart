@@ -1,5 +1,6 @@
 // Native Imports
 import Head from 'next/head'
+import Image from 'next/image'
 
 // Components Imports
 import Products from '../components/Products/Products'
@@ -7,11 +8,17 @@ import Carousel from '../components/Carousel/Carousel'
 import Category from '../components/Category/Category'
 import Notion from '../components/Notion/Notion'
 import Footer from '../components/Footer/Footer'
+import Loader from '../components/PredDefinedComponents/Loader'
 
 // Images Import
 import main from '../public/main.svg'
+import { useSelector } from 'react-redux'
 
 export default function Home() {
+  const load = useSelector((state) => state?.load?.isLoad)
+
+  const error = useSelector((state) => state?.error?.isError)
+
   return (
     <>
       {/* Meta Data */}
@@ -24,7 +31,13 @@ export default function Home() {
       {/* Landing Page */}
       <div className="flex flex-col items-center h-fit min-h-screen md:py-0 md:pt-14 py-14 ">
         <div className="h-3/4 ">
-          <img className="w-screen h-full " src={main.src} alt="" />
+          <Image
+            className="w-screen h-full "
+            width={100}
+            height={10}
+            src={main.src}
+            alt=""
+          />
         </div>
 
         <h1 className="font-bold font-montserrat text-xl md:text-5xl w-full flex justify-start p-5 text-white  drop-shadow-[0_2.5px_2.5px_rgba(240,120,120,1)]">
@@ -44,6 +57,7 @@ export default function Home() {
         </div>
         <Footer />
       </div>
+      {load && !error && <Loader />}
     </>
   )
 }

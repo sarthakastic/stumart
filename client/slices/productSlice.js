@@ -5,16 +5,18 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import * as api from '../api/index'
 
 // Slice Imports
-import { setError } from './errorSlice'
+import { closeError, setError } from './errorSlice'
+import { closeLoad, setLoad } from './loaderSlice'
 
 // used to fetch all products
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts', // Unique string identifier for the thunk action
-  async ({ limit, page }, { rejectWithValue }) => {
-    console.log(limit, 'f limit')
+  async ({ limit, page }, { dispatch, rejectWithValue }) => {
     try {
+      dispatch(setLoad())
       const response = await api.fetchProducts(limit, page) // Call your API function with the passed arguments
       const data = await response?.data
+      dispatch(closeLoad())
       return data
     } catch (error) {
       return rejectWithValue(error?.data)
@@ -27,7 +29,9 @@ export const createProducts = createAsyncThunk(
   'createProduct',
   async (formData, { dispatch, rejectWithValue }) => {
     try {
+      dispatch(setLoad())
       const { data } = await api.createProduct(formData)
+      dispatch(closeLoad())
       return data
     } catch (error) {
       dispatch(setError(error?.response?.data?.message))
@@ -52,10 +56,12 @@ export const pagination = createAsyncThunk(
 // used to search products
 export const searchProducts = createAsyncThunk(
   'search',
-  async (searchQuery, { rejectWithValue }) => {
+  async (searchQuery, { dispatch, rejectWithValue }) => {
     try {
+      dispatch(setLoad())
       const response = await api.searchProducts(searchQuery)
       const data = await response?.data
+      dispatch(closeLoad())
       return data
     } catch (error) {
       return rejectWithValue(error.data)
@@ -66,11 +72,15 @@ export const searchProducts = createAsyncThunk(
 // used to get info of a particular product
 export const getProduct = createAsyncThunk(
   'fetchProduct',
-  async (id, { rejectWithValue }) => {
+  async (id, { dispatch, rejectWithValue }) => {
     try {
+      dispatch(setLoad())
+      console.log('first')
       const response = await api.getProduct(id)
       const data = await response?.data
-      console.log(data, 'data')
+
+      dispatch(closeLoad())
+      console.log('bvhbjkjnk')
       return data
     } catch (error) {
       return rejectWithValue(error?.data)
@@ -81,13 +91,13 @@ export const getProduct = createAsyncThunk(
 // used to get products of a particular user
 export const getUserProduct = createAsyncThunk(
   'fetchUserProduct',
-  async (creator, { rejectWithValue }) => {
+  async (creator, { dispatch, rejectWithValue }) => {
     try {
-      console.log(creator, 'slice')
+      dispatch(setLoad())
       const response = await api.getUserProduct(creator)
 
       const data = await response?.data
-      console.log(data, 'data')
+      dispatch(closeLoad())
       return data
     } catch (error) {
       return rejectWithValue(error?.data)
@@ -98,11 +108,11 @@ export const getUserProduct = createAsyncThunk(
 // used to update product info
 export const updateProduct = createAsyncThunk(
   'updateProduct',
-  async (id, formData, { rejectWithValue }) => {
-    console.log('firstslice')
+  async (id, formData, { dispatch, rejectWithValue }) => {
     try {
-      console.log(formData, id, 'slice')
+      dispatch(setLoad())
       const { data } = await api.updateProduct(id, formData)
+      dispatch(closeLoad())
       return data
     } catch (error) {
       console.log('first', error?.data)

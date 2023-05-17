@@ -9,6 +9,7 @@ import Button from './PredDefinedComponents/Button'
 
 // Slice Imports
 import { closeError } from '../slices/errorSlice'
+import { closeLoad } from '../slices/loaderSlice'
 
 // Image Imports
 import error from '../public/error.png'
@@ -21,6 +22,7 @@ const Error = (props) => {
    */
   const handleError = () => {
     dispatch(closeError())
+    dispatch(closeLoad())
   }
 
   return (

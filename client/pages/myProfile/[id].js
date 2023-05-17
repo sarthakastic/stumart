@@ -14,6 +14,7 @@ import AddAddress from '../../components/Address/AddAddress'
 import UserInfo from '../../components/UserInfo/UserInfo'
 import Button from '../../components/PredDefinedComponents/Button'
 import NoPosts from '../../components/PredDefinedComponents/NoPosts'
+import Loader from '../../components/PredDefinedComponents/Loader'
 
 // Icons Imports
 import { ImCross } from 'react-icons/Im'
@@ -28,6 +29,8 @@ const MyProfile = () => {
   const data = useSelector((state) => state?.posts)
 
   const error = useSelector((state) => state?.error)
+
+  const load = useSelector((state) => state?.load?.isLoad)
 
   const [user, setUser] = useState() // set localstorage data
 
@@ -54,16 +57,31 @@ const MyProfile = () => {
 
   //  retrieve posts by user
   useEffect(() => {
-    const page = 1
-    dispatch(getUserProduct(user?.result?._id))
-      .then((posts) => {
-        setPostData(posts?.payload)
-        setCreator(user?.result?._id)
-      })
-      .catch((error) => {
+    let isMounted = true // Flag to track component mount/unmount
+
+    const fetchUserProduct = async () => {
+      try {
+        const posts = await dispatch(getUserProduct(user?.result?._id))
+        if (isMounted) {
+          setPostData(posts?.payload)
+          setCreator(user?.result?._id)
+        }
+      } catch (error) {
         console.log(error)
-      })
+      }
+    }
+
+    fetchUserProduct()
+
+    // Cleanup function
+    return () => {
+      isMounted = false
+    }
   }, [user])
+
+  useEffect(() => {
+    console.log(postData, user, 'userProfile')
+  }, [postData])
 
   // retrieve user address
   useEffect(() => {
@@ -233,7 +251,7 @@ const MyProfile = () => {
             My Products
           </h1>
         )}
-        {postData.map((i) => (
+        {postData?.map((i) => (
           <Card
             key={i._id}
             price={i.cost}
@@ -277,6 +295,7 @@ const MyProfile = () => {
         </div>
       )}
       {error?.isError && <Error error={error?.error} />}
+      {load && <Loader />}
     </div>
   )
 }

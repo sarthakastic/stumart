@@ -6,13 +6,16 @@ import * as api from '../api/index'
 
 // Slice Imports
 import { setError } from './errorSlice'
+import { closeLoad, setLoad } from './loaderSlice'
 
 // used to sign in
 export const signin = createAsyncThunk(
   'signin',
   async (formData, { dispatch, rejectWithValue }) => {
     try {
+      dispatch(setLoad())
       const response = await api.signin(formData)
+      dispatch(closeLoad())
       return response?.data
     } catch (error) {
       console.log(error?.response?.data?.message, 'nbvxnshjx')
@@ -27,10 +30,11 @@ export const signup = createAsyncThunk(
   'signup',
   async (formData, { dispatch, rejectWithValue }) => {
     try {
+      dispatch(setLoad())
       const response = await api.signup(formData)
+      dispatch(closeLoad())
       return response?.data
     } catch (error) {
-      console.log(error?.response?.data?.message, 'nbvxnshjx')
       dispatch(setError(error?.response?.data?.message))
       rejectWithValue(error)
     }
@@ -44,10 +48,8 @@ export const validateUser = createAsyncThunk(
   async (formData, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.validateSighnUp(formData)
-      console.log(response, 'inside slice')
       return response
     } catch (error) {
-      console.log(error, 'inside catch')
       dispatch(setError(error?.response?.data?.message))
       rejectWithValue(error)
     }
@@ -60,11 +62,11 @@ export const validateEditPassword = createAsyncThunk(
 
   async (formData, { dispatch, rejectWithValue }) => {
     try {
+      dispatch(setLoad())
       const response = await api.validateUser(formData)
-      console.log(response, 'inside slice')
+      dispatch(closeLoad())
       return response
     } catch (error) {
-      console.log(error, 'inside catch')
       dispatch(setError(error?.response?.data?.message))
       rejectWithValue(error)
     }
@@ -76,10 +78,11 @@ export const getUserInfo = createAsyncThunk(
   'userInfo',
   async (id, { dispatch, rejectWithValue }) => {
     try {
+      dispatch(setLoad())
       const response = await api.getUserInfo(id)
+      dispatch(closeLoad())
       return response?.data
     } catch (error) {
-      console.log(error?.response?.data?.message, 'nbvxnshjx')
       dispatch(setError(error?.response?.data?.message))
       rejectWithValue(error)
     }

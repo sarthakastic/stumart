@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
 
 // Redux Imports
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 // Slice Imports
 import { addAddress, getAddress } from '../slices/addressSlice'
@@ -11,6 +11,7 @@ import { addAddress, getAddress } from '../slices/addressSlice'
 // Components Imports
 import Button from '../components/PredDefinedComponents/Button'
 import AddAddress from '../components/Address/AddAddress'
+import Loader from '../components/PredDefinedComponents/Loader'
 
 // Icon Imports
 import { FiLogIn } from 'react-icons/Fi'
@@ -22,6 +23,10 @@ const addresss = () => {
   const dispatch = useDispatch()
 
   const router = useRouter()
+
+  const load = useSelector((state) => state?.load?.isLoad)
+
+  const error = useSelector((state) => state?.error?.isError)
 
   // used to store user data from local storage
   const [user, setUser] = useState()
@@ -102,6 +107,7 @@ const addresss = () => {
       <div className="w-1/2 min-h-[920px] h-screen hidden md:flex  bg-ternary justify-center items-center ">
         <img className="h-3/4" src={addressIcon.src} />
       </div>
+      {load && !error && <Loader />}
     </div>
   )
 }

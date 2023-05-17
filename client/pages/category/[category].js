@@ -9,6 +9,7 @@ import { searchProducts } from '../../slices/productSlice'
 // Components Imports
 import Card from '../../components/PredDefinedComponents/Card'
 import NoPosts from '../../components/PredDefinedComponents/NoPosts'
+import Loader from '../../components/PredDefinedComponents/Loader'
 
 const CategoryProduct = () => {
   const router = useRouter()
@@ -16,6 +17,8 @@ const CategoryProduct = () => {
   const category = router.query.category
 
   const post = useSelector((posts) => posts?.posts?.posts)
+
+  const load = useSelector((state) => state?.load?.isLoad)
 
   const search = '' // set search as empty string
 
@@ -54,6 +57,7 @@ const CategoryProduct = () => {
           </>
         ))}
       </div>
+      {load && <Loader />}
     </div>
   )
 }

@@ -3,14 +3,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 // API Imports
 import * as api from '../api/index'
+import { closeLoad, setLoad } from './loaderSlice'
 
 // used to add address
 export const addAddress = createAsyncThunk(
   'createProduct',
-  async (formData, { rejectWithValue }) => {
+  async (formData, { dispatch, rejectWithValue }) => {
     try {
+      dispatch(setLoad())
       const data = await api.addAddress(formData)
-      console.log(data, 'addAddress')
+      dispatch(closeLoad())
       return data
     } catch (error) {
       return rejectWithValue(error?.data)

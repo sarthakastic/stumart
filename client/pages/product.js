@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 
 // Redux Imports
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 
 // Slice Imports
@@ -11,6 +11,7 @@ import { getAddress } from '../slices/addressSlice'
 // Components Imports
 import Button from '../components/PredDefinedComponents/Button'
 import AddProducts from '../components/Products/AddProducts'
+import Loader from '../components/PredDefinedComponents/Loader'
 
 // Icon Imports
 import { FiLogIn } from 'react-icons/Fi'
@@ -25,6 +26,11 @@ const Product = (props) => {
   const dispatch = useDispatch()
 
   const router = useRouter()
+
+  const load = useSelector((state) => state?.load?.isLoad)
+  console.log(load, 'k')
+
+  const error = useSelector((state) => state?.error?.isError)
 
   // used to store local storage user info
   const [user, setUser] = useState()
@@ -116,6 +122,7 @@ const Product = (props) => {
       <div className=" hidden md:flex md:w-1/2 items-center justify-center   ">
         <img className="h-1/2 md:h-3/4" src={addPost.src} />
       </div>
+      {load && !error && <Loader />}
     </div>
   )
 }
