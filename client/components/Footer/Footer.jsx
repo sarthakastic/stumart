@@ -8,7 +8,7 @@ import {
   AiFillTwitterCircle,
   AiFillGithub,
   AiOutlineMail,
-} from 'react-icons/Ai'
+} from 'react-icons/ai'
 
 const Footer = () => {
   const router = useRouter()

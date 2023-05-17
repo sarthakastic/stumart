@@ -14,7 +14,7 @@ import AddAddress from '../components/Address/AddAddress'
 import Loader from '../components/PredDefinedComponents/Loader'
 
 // Icon Imports
-import { FiLogIn } from 'react-icons/Fi'
+import { FiLogIn } from 'react-icons/fi'
 
 // Images Imports
 import addressIcon from '../public/address.svg'

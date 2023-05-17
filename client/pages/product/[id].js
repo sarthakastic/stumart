@@ -14,7 +14,7 @@ import Card from '../../components/PredDefinedComponents/Card'
 import Loader from '../../components/PredDefinedComponents/Loader'
 
 // Icons Imports
-import { FiLogIn } from 'react-icons/Fi'
+import { FiLogIn } from 'react-icons/fi'
 
 // Images Imports
 import registerIcon from '../../public/register.png'

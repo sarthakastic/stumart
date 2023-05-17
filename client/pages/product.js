@@ -14,8 +14,8 @@ import AddProducts from '../components/Products/AddProducts'
 import Loader from '../components/PredDefinedComponents/Loader'
 
 // Icon Imports
-import { FiLogIn } from 'react-icons/Fi'
-import { BiLocationPlus } from 'react-icons/Bi'
+import { FiLogIn } from 'react-icons/fi'
+import { BiLocationPlus } from 'react-icons/bi'
 
 // Images Imports
 import registerIcon from '../public/register.png'

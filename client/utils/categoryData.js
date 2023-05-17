@@ -6,21 +6,21 @@ import {
   FaMugHot,
   FaMobileAlt,
   FaUtensils,
-} from 'react-icons/Fa'
+} from 'react-icons/fa'
 import {
   MdPedalBike,
   MdOutlineLaptop,
   MdOutlineDevicesOther,
   MdSportsCricket,
   MdControlCamera,
-} from 'react-icons/Md'
+} from 'react-icons/md'
 
 import {
   GiFullMotorcycleHelmet,
   GiClothes,
   GiComputerFan,
   GiPillow,
-} from 'react-icons/Gi'
+} from 'react-icons/gi'
 
 export const category = [
   { key: 1, category: 'Books', icon: <FaBook className="text-3xl  " /> },

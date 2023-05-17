@@ -9,9 +9,9 @@ import { getAddress } from '../../slices/addressSlice'
 import { useDispatch } from 'react-redux'
 
 // Icons IMports
-import { AiFillEdit } from 'react-icons/Ai'
-import { ImCross } from 'react-icons/Im'
-import { MdDelete } from 'react-icons/Md'
+import { AiFillEdit } from 'react-icons/ai'
+import { ImCross } from 'react-icons/im'
+import { MdDelete } from 'react-icons/md'
 
 // API Imports
 import * as api from '../../api/index'

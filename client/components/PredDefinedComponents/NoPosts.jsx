@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import Button from './Button'
 
 // Icons Imports
-import { BiImageAdd, BiLocationPlus } from 'react-icons/Bi'
+import { BiImageAdd, BiLocationPlus } from 'react-icons/bi'
 
 // Images Imports
 import noPosts from '../../public/noPosts.png'

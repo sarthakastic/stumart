@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { searchProducts } from '../../slices/productSlice'
 
 // Icons Imports
-import { BiSearchAlt } from 'react-icons/Bi'
+import { BiSearchAlt } from 'react-icons/bi'
 
 const Search = () => {
   const dispatch = useDispatch()

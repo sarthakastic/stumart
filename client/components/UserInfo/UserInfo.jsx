@@ -14,7 +14,7 @@ import * as api from '../../api'
 import Error from '../Error'
 import { auth } from '../Firebase/firebase.config'
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
-import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/Bs'
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs'
 
 const UserInfo = (props) => {
   const [isSignUp, setIsSignUp] = useState(true)

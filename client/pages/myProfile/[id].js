@@ -17,10 +17,10 @@ import NoPosts from '../../components/PredDefinedComponents/NoPosts'
 import Loader from '../../components/PredDefinedComponents/Loader'
 
 // Icons Imports
-import { ImCross } from 'react-icons/Im'
-import { AiFillEdit } from 'react-icons/Ai'
-import { BiLocationPlus } from 'react-icons/Bi'
-import { FiLogIn } from 'react-icons/Fi'
+import { ImCross } from 'react-icons/im'
+import { AiFillEdit } from 'react-icons/ai'
+import { BiLocationPlus } from 'react-icons/bi'
+import { FiLogIn } from 'react-icons/fi'
 
 const MyProfile = () => {
   const router = useRouter()

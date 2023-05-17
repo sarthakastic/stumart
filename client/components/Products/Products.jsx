@@ -9,7 +9,7 @@ import { fetchProducts } from '../../slices/productSlice'
 import Card from '../PredDefinedComponents/Card'
 import NoPosts from '../PredDefinedComponents/NoPosts'
 
-import { AiOutlineArrowRight } from 'react-icons/Ai'
+import { AiOutlineArrowRight } from 'react-icons/ai'
 
 const Products = () => {
   const dispatch = useDispatch()

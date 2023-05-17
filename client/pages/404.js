@@ -5,7 +5,7 @@ import React from 'react'
 import Button from '../components/PredDefinedComponents/Button'
 
 // Icons Imports
-import { HiHome } from 'react-icons/Hi'
+import { HiHome } from 'react-icons/hi'
 
 // Images Imports
 import lostIcon from '../public/lost.svg'

@@ -12,8 +12,8 @@ import { addAddress, getAddress } from '../../slices/addressSlice'
 import Button from '../PredDefinedComponents/Button'
 
 // Icons Imports
-import { FiLogIn } from 'react-icons/Fi'
-import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from 'react-icons/Io'
+import { FiLogIn } from 'react-icons/fi'
+import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from 'react-icons/io'
 
 // API Imports
 import { updateAddress } from '../../api'

@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import Button from '../PredDefinedComponents/Button'
 
 // Icons Imports
-import { HiHome } from 'react-icons/Hi'
-import { FiLogIn } from 'react-icons/Fi'
-import { BiImageAdd } from 'react-icons/Bi'
+import { HiHome } from 'react-icons/hi'
+import { FiLogIn } from 'react-icons/fi'
+import { BiImageAdd } from 'react-icons/bi'
 
 const Navigation = () => {
   const dispatch = useDispatch()
