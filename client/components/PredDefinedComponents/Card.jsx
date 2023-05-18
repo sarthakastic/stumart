@@ -18,6 +18,7 @@ import * as api from '../../api/index'
 
 // Components Imports
 import AddProducts from '../Products/AddProducts'
+import Button from './Button'
 
 const Card = (props) => {
   const dispatch = useDispatch()
@@ -92,16 +93,17 @@ const Card = (props) => {
   return (
     <>
       {edit && (
-        <div className="fixed inset-0 z-10  bg-black bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center ">
-          <div
-            onClick={handleEdit}
-            className="text-2xl flex items-start bg-red-400 hover:text-white hover:cursor-pointer hover:bg-gray-700 rounded-full p-1 border-2 border-gray-700 "
-          >
-            <ImCross />
-          </div>
-          <h2 className=" text-gray-700 font-bold ">Edit Product!</h2>
-          <div className="h-1/2 w-1/2 ">
-            <AddProducts id={props?.id} />
+        <div className="fixed inset-0 z-10 overflow-y-scroll  bg-black bg-opacity-30 backdrop-blur-sm flex flex-col items-center justify-center ">
+          <div className="h-1/2 md:w-1/2 flex flex-col ">
+            <AddProducts id={props?.id} edit={true} />
+            <br />
+            <Button content={'Close'} error={false} onClick={handleEdit} />
+            <div className="flex md:hidden">
+              <br />
+              <br />
+              <br />
+              <br />
+            </div>
           </div>
         </div>
       )}
@@ -166,7 +168,7 @@ const Card = (props) => {
                           .updateProductStatus(props?.id, {
                             productStatus: false,
                           })
-                          .then(router.reload())
+                          .then((res) => res?.status === 200 && router.reload())
                       }
                     >
                       {router.pathname.includes('myProfile') &&
@@ -176,12 +178,11 @@ const Card = (props) => {
                     <div
                       className="text-primary hover:underline decoration-primary hover:cursor-pointer"
                       onClick={() => {
-                        console.log('bvcjhdcdckjdckk')
                         api
                           .updateProductStatus(props?.id, {
                             productStatus: true,
                           })
-                          .then(router.reload())
+                          .then((res) => res?.status === 200 && router.reload())
                       }}
                     >
                       {router.pathname.includes('myProfile') && 'Mark as sold'}
