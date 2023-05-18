@@ -44,6 +44,8 @@ export const validateUser = async (req, res) => {
   const existingUser = await User.findOne({ phoneNumber });
   if (!existingUser) {
     return res.status(404).json({ message: "User doesn't exist." });
+  } else {
+    return res.status(200).json({ message: "User exists." });
   }
 };
 
