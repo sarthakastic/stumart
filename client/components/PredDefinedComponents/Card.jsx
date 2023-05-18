@@ -160,10 +160,12 @@ const Card = (props) => {
 
                   {props?.status ? (
                     <div
-                      className="text-primary hover:underline decoration-primary "
+                      className="text-primary hover:underline decoration-primary hover:cursor-pointer "
                       onClick={() =>
                         api
-                          .updateProduct(props?.id, { productStatus: false })
+                          .updateProductStatus(props?.id, {
+                            productStatus: false,
+                          })
                           .then(router.reload())
                       }
                     >
@@ -172,12 +174,15 @@ const Card = (props) => {
                     </div>
                   ) : (
                     <div
-                      className="text-primary hover:underline decoration-primary "
-                      onClick={() =>
+                      className="text-primary hover:underline decoration-primary hover:cursor-pointer"
+                      onClick={() => {
+                        console.log('bvcjhdcdckjdckk')
                         api
-                          .updateProduct(props?.id, { productStatus: true })
+                          .updateProductStatus(props?.id, {
+                            productStatus: true,
+                          })
                           .then(router.reload())
-                      }
+                      }}
                     >
                       {router.pathname.includes('myProfile') && 'Mark as sold'}
                     </div>
