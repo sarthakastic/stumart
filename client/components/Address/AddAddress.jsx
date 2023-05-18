@@ -215,11 +215,20 @@ const AddAddress = (props) => {
             <option onClick={selectHostel} value="Narayan Guru">
               Narayan Guru
             </option>
-            <option onClick={selectHostel} value="Ghasidas">
-              Ghasidas
+            <option onClick={selectHostel} value=" Mahamaya">
+              Mahamaya
             </option>
             <option onClick={selectHostel} value="Ghasidas">
-              Ghasidas
+              Savitri Bai
+            </option>
+            <option onClick={selectHostel} value=" Rani Laxmi Bai">
+              Rani Laxmi Bai
+            </option>
+            <option onClick={selectHostel} value=" Mahadevi Verma">
+              Mahadevi Verma
+            </option>
+            <option onClick={selectHostel} value="Sahoji">
+              Sahoji
             </option>
           </select>
         )}
