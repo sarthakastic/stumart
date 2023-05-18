@@ -177,7 +177,7 @@ const AddProducts = (props) => {
   return (
     <div className=" flex items-center justify-center flex-col bg-white shadow-2xl rounded-2xl ">
       <h4 className="text-2xl flex justify-center items-center text-center my-4 font-montserrat font-bold text-secondary ">
-        Add your Product!
+        {props?.edit ? 'Edit your Product!' : 'Add your Product!'}
       </h4>
       <form
         className="flex flex-col  items-start m-2 justify-center bg-white p-5 rounded-2xl"
