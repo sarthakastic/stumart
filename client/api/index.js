@@ -102,6 +102,17 @@ export const updateProduct = (id, formData) =>
     },
   })
 
+// used to update product status
+export const updateProductStatus = (id, formData) =>
+  API.patch(`/product/status/${id}`, formData, {
+    headers: {
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem('profile')).token
+      }`,
+      'X-Custom-Header': 'foobar',
+    },
+  })
+
 // used to delete product
 export const deleteProduct = (id) =>
   API.delete(`/product/${id}`, {
