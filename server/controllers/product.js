@@ -106,7 +106,7 @@ export const updateProduct = async (req, res) => {
     return res.status(404).send("No profile with this ID");
 
   // Convert selectedFile to file object
-  const fileBuffer = Buffer.from(product.photos[0], "base64");
+  const fileBuffer = Buffer.from(product.photos, "base64");
 
   // Write file buffer to a temporary file
   const tempFilePath = "/tmp/" + Date.now() + "-tempfile";
@@ -122,14 +122,20 @@ export const updateProduct = async (req, res) => {
     return res.status(400).json({ message: "File size exceeds 30MB." });
   }
 
-  const fileExtension = product.photos[0].split(";")[0].split("/")[1];
+  const fileExtension =
+    typeof product?.photos === "string"
+      ? product.photos.split(";")[0].split("/")[1]
+      : product.photos[0].split(";")[0].split("/")[1];
   const mimeType = mimeTypes.lookup(fileExtension);
 
   // Add allowed file types here
   const allowedMimeTypes = ["image/jpeg", "image/png"];
 
-  if (!mimeType || !allowedMimeTypes.includes(mimeType)) {
-    return res.status(400).json({ message: "Invalid file type." });
+  if (typeof product?.photos === "string") {
+  } else {
+    if (!mimeType || !allowedMimeTypes.includes(mimeType)) {
+      return res.status(400).json({ message: "Invalid file type." });
+    }
   }
 
   const updatedProduct = await Product.findByIdAndUpdate(
