@@ -26,13 +26,13 @@ https://github.com/Stability-AI/StableStudio/assets/72138026/74087fb6-e4da-4137-
 
 Contributions are always welcome!
 
-Fork this repository
+- Fork this repository
 
-To clone on your local system type :
+- To clone on your local system type :
 
 `git clone https://github.com/sarthakastic/stumart.git` 
 
-Install node modules in your project by typing :
+- Install node modules in your project by typing :
 
 `npm install ` 
 
@@ -40,9 +40,9 @@ or
 
 `yarn add ` 
 
-Contact me at `iamsg26@gmail.com` for environment variables to run this code 
+- Contact me at `iamsg26@gmail.com` for environment variables to run this code 
 
-Please adhere to this project's `code of conduct`.
+- Please adhere to this project's `code of conduct`.
 
 
 ## Tech Stack
