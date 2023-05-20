@@ -16,6 +16,7 @@ https://www.stumart.shop/
 - User signUp/logIn by phoneNumber 📲
 - Mark Product as sold/unsold ✅
 - Edit userInfo and productInfo ✍️
+- Use AI to write product details 🤖
 - Responsive UI 𝌮
 - Forgot Password implementation ❓
 - Search in products 🔍
