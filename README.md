@@ -6,6 +6,11 @@ The Stumart is an online platform designed exclusively for the university commun
 
 ![Stumart](https://github.com/Stability-AI/StableStudio/assets/72138026/690cc97a-62f5-43f0-95a6-5fc484e95576)
 
+
+## Visit Live Site
+
+https://www.stumart.shop/ 
+
 ## Features
 
 - User signUp/logIn by phoneNumber 📲
